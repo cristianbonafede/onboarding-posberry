@@ -1,0 +1,26 @@
+.ant-form-item {
+  width: 100%;
+
+  .ant-form-item-label {
+    padding-bottom: 4px;
+
+    label {
+      font-size: 12px;
+      color: #5e5873;
+
+      &.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+        content: none;
+      }
+    }
+  }
+
+  .ant-form-item-explain-error {
+    font-size: 12px;
+    color: #ea5455;
+  }
+}
+
+.ant-divider {
+  margin: 30px -30px 40px -30px;
+  width: 115%;
+}

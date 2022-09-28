@@ -1,0 +1,162 @@
+.layout {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/images/background.jpg');
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  .gradient {
+    height: inherit;
+    width: inherit;
+    background: rgb(0, 0, 0);
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.7847514005602241) 45%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px 60px;
+
+    .jumbotron {
+      height: calc(100vh - 80px);
+      width: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 55%;
+
+      .logo {
+        width: 150px;
+        height: 50px;
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .title {
+        color: #fff;
+        max-width: 500px;
+        font-size: 2em;
+        font-weight: 600;
+        margin-bottom: 30px;
+      }
+
+      .description {
+        color: #fff;
+        max-width: 500px;
+        font-size: 20px;
+        margin-bottom: 60px;
+      }
+
+      &.home {
+        width: 100%;
+      }
+    }
+
+    .main {
+      width: 45%;
+      height: calc(100vh - 80px);
+
+      &.home {
+        width: 0%;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1500px) {
+  .layout {
+    .gradient {
+      .jumbotron {
+        width: 45%;
+
+        &.home {
+          width: 100%;
+        }
+      }
+
+      .main {
+        width: 55%;
+
+        &.home {
+          width: 0%;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .layout {
+    .gradient {
+      background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 0.7847514005602241) 60%,
+        rgba(0, 0, 0, 0.6) 100%
+      );
+
+      .jumbotron {
+        display: none;
+        width: 0%;
+
+        &.home {
+          display: flex;
+          width: 100%;
+        }
+      }
+
+      .main {
+        width: 100%;
+
+        &.home {
+          width: 0%;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .layout {
+    .gradient {
+      padding: 0px 0px;
+
+      .jumbotron {
+        width: 0%;
+        justify-content: space-between;
+
+        .logo {
+          width: 120px;
+          height: 40px;
+        }
+
+        .title {
+          font-size: 30px;
+        }
+
+        .description {
+          font-size: 17px;
+        }
+
+        &.home {
+          width: 100%;
+          padding: 10px 15px 40px 15px;
+        }
+      }
+
+      .main {
+        height: 100vh;
+        width: 100%;
+
+        &.home {
+          width: 0%;
+        }
+      }
+    }
+  }
+}

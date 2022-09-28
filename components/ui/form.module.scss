@@ -1,0 +1,51 @@
+.form {
+  height: inherit;
+  width: inherit;
+  position: relative;
+  height: calc(100% - 40px);
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  .content {
+    width: 100%;
+    min-height: calc(100% - 95px);
+    padding: 30px 100px;
+  }
+
+  .actions {
+    margin: 0px 40px 30px 40px;
+
+    > * {
+      margin-top: 15px;
+    }
+  }
+
+  &.centered {
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 100px;
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .form {
+    .content {
+      padding: 50px 35px 20px 35px;
+      min-height: calc(100vh - 265px);
+    }
+
+    .actions {
+      margin: 0px 20px 70px 20px;
+    }
+
+    &.centered {
+      .content {
+        padding: 50px 35px 20px 35px;
+      }
+    }
+  }
+}
