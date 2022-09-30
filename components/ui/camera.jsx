@@ -76,7 +76,7 @@ const Camera = (props) => {
     setCapturing(true);
 
     mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
-      mimeType: 'video/webm',
+      mimeType: MediaRecorder.isTypeSupported('video/webm') ? 'video/webm' : 'video/mp4',
     });
     mediaRecorderRef.current.addEventListener(
       'dataavailable',
