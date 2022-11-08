@@ -41,7 +41,7 @@ const FormJuridica = () => {
   return (
     <Form onSubmit={onSubmit}>
       <Input label="Nombre de Fantasía" name="nombre" required autofocus />
-      <Input label="CUIT" name="cuil" required />
+      <Input label="CUIT" name="cuit" required />
       <Select
         label="Rubro"
         name="rubro"

@@ -159,7 +159,6 @@ const FormCredenciales = () => {
 
   return (
     <Form onSubmit={onSubmit}>
-      <Input label="Usuario" name="usuario" required autofocus />
       <Input
         label="Contraseña"
         name="password"
@@ -203,7 +202,7 @@ const FormCredenciales = () => {
       </div>
 
       <div className={classes.footer}>
-        Recordá tu <Highlight primary>usuario y contraseña</Highlight>
+        Recordá tu <Highlight primary> contraseña</Highlight>
         y no la compartas con nadie. Las necesitarás para ingresar 
         en el <Highlight primary>Homebanking Bind24</Highlight> y administrar tu cuenta.
       </div>

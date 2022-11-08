@@ -108,7 +108,7 @@ const create = async (frente, dorso) => {
   return false;
 };
 
-const createJuridica = async (nombre, cuil, rubro, email, telefono) => {
+const createJuridica = async (nombre, cuit, rubro, email, telefono) => {
   if (mockup) {
     await mockupDelay();
     return true;
@@ -118,7 +118,7 @@ const createJuridica = async (nombre, cuil, rubro, email, telefono) => {
   const data = {
     entidadId: sessionStorage.getItem('entidad'),
     nombreFantasia: nombre,
-    cuil: cuil,
+    cuit: cuit,
     rubro: rubro,
     email: email,
     telefono: telefono,
@@ -597,7 +597,7 @@ const updateAltaCuenta = async () => {
   return false;
 };
 
-const updateCredenciales = async (usuario, password) => {
+const updateCredenciales = async (password) => {
   if (mockup) {
     await mockupDelay();
     return true;
@@ -606,7 +606,6 @@ const updateCredenciales = async (usuario, password) => {
   const id = sessionStorage.getItem('solicitud');
   const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/credenciales`;
   const data = {
-    usuario: usuario,
     password: password,
   };
 
@@ -627,7 +626,7 @@ const runAction = async (action, form) => {
     case actions.createJuridica:
       return await createJuridica(
         form.nombre,
-        form.cuil,
+        form.cuit,
         form.rubro,
         form.email,
         form.telefono
@@ -712,7 +711,7 @@ const runAction = async (action, form) => {
       return await updateAltaCuenta();
 
     case actions.updateCredenciales:
-      return await updateCredenciales(form.usuario, form.password);
+      return await updateCredenciales(form.password);
 
     default:
       return false;
@@ -745,7 +744,7 @@ const stepsFisica = [
         completed: false,
       },
       {
-        id: actions.updateListaNegraBind,
+        id: actions.updateListaBlanca,
         title: '',
         completed: false,
       },

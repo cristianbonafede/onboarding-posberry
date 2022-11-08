@@ -1,3 +1,5 @@
+import http from '../services/http';
+
 const mockup = process.env.NEXT_PUBLIC_MOCKUP === 'true';
 
 const get = async () => {
