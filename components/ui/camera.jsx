@@ -53,6 +53,8 @@ const Camera = (props) => {
         // } else {
           nContraints.facingMode = 'user';
         // }
+
+        alert(JSON.stringify(nContraints)) 
       } else {
         camera = cameras.pop();
 
