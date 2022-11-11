@@ -37,7 +37,7 @@ const Camera = (props) => {
       let camera = {};
       let nContraints = {};
 
-      if (isMobile) {
+      if (isMobile && position !== 'front' ) {
         nContraints.width = { min: 1080 };
         nContraints.height = { min: 1920 };
         nContraints.aspectRatio = 1.777777778;
