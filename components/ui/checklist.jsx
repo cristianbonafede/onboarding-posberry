@@ -138,7 +138,7 @@ const Checklist = (props) => {
 
       <div className={classes.section}>Procesando...</div>
 
-      <div className={classes.list}>
+      {/* <div className={classes.list}>
         {list.filter(d=> d.title).map((item, index) => (
           <div
             key={index}
@@ -163,7 +163,7 @@ const Checklist = (props) => {
             )}
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

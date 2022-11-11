@@ -28,7 +28,13 @@ const FormVideo = () => {
   }
 
   return (
-    <Camera type="video" overlay="face" duration={4} onSubmit={onSubmit} />
+    <Camera
+      type="video"
+      position="front"
+      overlay="face"
+      duration={4}
+      onSubmit={onSubmit}
+    />
   );
 };
 

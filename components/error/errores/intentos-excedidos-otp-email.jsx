@@ -9,7 +9,9 @@ const IntentosExcedidosOtpEmail = () => {
   const router = useRouter();
 
   const onClickRetry = () => {
-    router.push('/');
+    const entidad = sessionStorage.getItem('entidad');
+    const type = sessionStorage.getItem('type');
+    router.push(`/?e=${entidad}&t=${type}`);
   };
 
   return (
@@ -33,10 +35,7 @@ const IntentosExcedidosOtpEmail = () => {
         <div>
           Por favor, volvé a intentarlo más tarde. Si el problema persiste
           comunicate con{' '}
-          <a
-            href="mailto:info@bindpagos.com.ar"
-            style={{ color: '#ff9340' }}
-          >
+          <a href="mailto:info@bindpagos.com.ar" style={{ color: '#ff9340' }}>
             info@bindpagos.com.ar
           </a>
         </div>

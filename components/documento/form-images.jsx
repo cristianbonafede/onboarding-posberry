@@ -10,9 +10,20 @@ import { solicitud } from './../../models/solicitud';
 const FormImages = () => {
   const context = useContext(SolicitudContext);
 
-  const onCameraSubmit = (value) => {
+  const onCameraSubmit = (value, crop = null) => {
     let nForm = { ...context.form };
     nForm[context.formProperty] = value;
+
+    if (crop !== null) {
+      if (context.formProperty === 'frente') {
+        nForm['cropFrente'] = crop;
+      }
+
+      if (context.formProperty === 'dorso') {
+        nForm['cropDorso'] = crop;
+      }
+    }
+
     context.updateForm(nForm);
     context.changeScreen(solicitud.screens.form);
   };
@@ -27,7 +38,13 @@ const FormImages = () => {
 
   if (context.screen === solicitud.screens.camera) {
     return (
-      <Camera type="photo" overlay="card" upload onSubmit={onCameraSubmit} />
+      <Camera
+        type="photo"
+        position="back"
+        overlay="card"
+        upload
+        onSubmit={onCameraSubmit}
+      />
     );
   }
 

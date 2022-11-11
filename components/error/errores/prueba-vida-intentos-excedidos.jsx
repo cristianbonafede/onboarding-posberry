@@ -9,7 +9,9 @@ const PruebaVidaIntentosExcedidos = () => {
   const router = useRouter();
 
   const onClickRetry = () => {
-    router.push('/');
+    const entidad = sessionStorage.getItem('entidad');
+    const type = sessionStorage.getItem('type');
+    router.push(`/?e=${entidad}&t=${type}`);
   };
 
   return (
@@ -25,10 +27,7 @@ const PruebaVidaIntentosExcedidos = () => {
         <div>
           Por favor, volvé a intentarlo en 24hs. Si el problema persiste
           comunicate con{' '}
-          <a
-            href="mailto:info@bindpagos.com.ar"
-            style={{ color: '#ff9340' }}
-          >
+          <a href="mailto:info@bindpagos.com.ar" style={{ color: '#ff9340' }}>
             info@bindpagos.com.ar
           </a>
         </div>

@@ -9,7 +9,9 @@ const EjemplarNoValido = () => {
   const router = useRouter();
 
   const onClickRetry = () => {
-    router.push('/');
+    const entidad = sessionStorage.getItem('entidad');
+    const type = sessionStorage.getItem('type');
+    router.push(`/?e=${entidad}&t=${type}`);
   };
 
   return (
@@ -20,8 +22,8 @@ const EjemplarNoValido = () => {
       <div className={classes.description}>
         <div>
           No podemos validar tu identidad porque el DNI utilizado no coincide
-          con el último ejemplar válido por RENAPER (Registro Nacional de las Personas). Podes verificar cuál es el
-          ejemplar vigente de DNI desde{' '}
+          con el último ejemplar válido por RENAPER (Registro Nacional de las
+          Personas). Podes verificar cuál es el ejemplar vigente de DNI desde{' '}
           <a
             href="https://tramites.renaper.gob.ar/mi_ejemplar/"
             target="_blank"
@@ -34,10 +36,7 @@ const EjemplarNoValido = () => {
         <div>
           Por favor, asegurate de contar con el último ejemplar vigente y volvé
           a intentarlo más tarde. Si el problema persiste comunicate con{' '}
-          <a
-            href="mailto:info@bindpagos.com.ar"
-            style={{ color: '#ff9340' }}
-          >
+          <a href="mailto:info@bindpagos.com.ar" style={{ color: '#ff9340' }}>
             info@bindpagos.com.ar
           </a>
         </div>

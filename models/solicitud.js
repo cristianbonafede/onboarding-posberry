@@ -83,7 +83,7 @@ const get = async () => {
   return false;
 };
 
-const create = async (frente, dorso) => {
+const create = async (frente, dorso, cropFrente, cropDorso) => {
   if (mockup) {
     await mockupDelay();
     return true;
@@ -94,6 +94,8 @@ const create = async (frente, dorso) => {
     entidadId: sessionStorage.getItem('entidad'),
     frente: frente && frente.substr(frente.indexOf(',') + 1),
     dorso: dorso && dorso.substr(dorso.indexOf(',') + 1),
+    cropFrente: cropFrente,
+    cropDorso: cropDorso,
   };
 
   const response = await http.post(url, data);
@@ -534,7 +536,6 @@ const updateWorldsys = async () => {
   const data = {};
 
   const response = await http.patch(url, data);
-  debugger;
   if (!response.error) {
     return true;
   }
@@ -621,7 +622,12 @@ const updateCredenciales = async (password) => {
 const runAction = async (action, form) => {
   switch (action.id) {
     case actions.create:
-      return await create(form.frente, form.dorso);
+      return await create(
+        form.frente,
+        form.dorso,
+        form.cropFrente,
+        form.cropDorso
+      );
 
     case actions.createJuridica:
       return await createJuridica(

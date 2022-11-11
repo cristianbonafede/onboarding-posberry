@@ -9,7 +9,9 @@ const DocumentoNoEncontrado = () => {
   const router = useRouter();
 
   const onClickRetry = () => {
-    router.push('/');
+    const entidad = sessionStorage.getItem('entidad');
+    const type = sessionStorage.getItem('type');
+    router.push(`/?e=${entidad}&t=${type}`);
   };
 
   return (

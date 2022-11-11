@@ -11,7 +11,7 @@ import { solicitud } from './../../models/solicitud';
 import classes from './camera.module.scss';
 
 const Camera = (props) => {
-  const { type, overlay, duration, upload, onSubmit } = props;
+  const { type, position, overlay, duration, upload, onSubmit } = props;
 
   const context = useContext(SolicitudContext);
   const webcamRef = useRef(null);
@@ -25,13 +25,54 @@ const Camera = (props) => {
   const [capturing, setCapturing] = useState(false);
   const [recordedChunks, setRecordedChunks] = useState([]);
 
+  const [devices, setDevices] = useState([]);
+  const [contraints, setContraints] = useState();
+
   const isMobile = window.innerWidth <= window.innerHeight;
   const mirrored = type === 'video';
 
-  const contraints = {
-    facingMode:
-      isMobile && type === 'photo' ? { exact: 'environment' } : 'user',
-  };
+  const handleDevices = useCallback(
+    (mediaDevices) => {
+      const cameras = mediaDevices.filter(({ kind }) => kind === 'videoinput');
+      let camera = {};
+      let nContraints = {};
+
+      if (isMobile) {
+        nContraints.width = { min: 1080 };
+        nContraints.height = { min: 1920 };
+        nContraints.aspectRatio = 1.777777778;
+      }
+
+      if (position === 'front') {
+        camera = cameras[0];
+
+        alert(JSON.stringify(camera));
+
+        // if (camera.deviceId) {
+        //   nContraints.deviceId = camera.deviceId;
+        // } else {
+          nContraints.facingMode = 'user';
+        // }
+      } else {
+        camera = cameras.pop();
+
+        alert(JSON.stringify(camera));
+
+        if (camera.deviceId) {
+          nContraints.deviceId = camera.deviceId;
+        } else {
+          nContraints.facingMode = { exact: 'environment' };
+        }
+      }
+
+      setContraints(nContraints);
+    },
+    [setDevices]
+  );
+
+  useEffect(() => {
+    navigator.mediaDevices.enumerateDevices().then(handleDevices);
+  }, [handleDevices]);
 
   useEffect(() => {
     setColorPrimary(sessionStorage.getItem('color-primary'));
@@ -62,10 +103,27 @@ const Camera = (props) => {
     }
   };
 
-  const takePicture = () => {
+  const takePicture = async () => {
     const base64 = webcamRef.current.getScreenshot();
-    // previewImage(base64);
-    onSubmit(base64);
+    const file = base64toBlob(base64);
+
+    new Compressor(file, {
+      quality: 0.6,
+      async success(result) {
+        let reader = new FileReader();
+
+        reader.onload = async () => {
+          const base64 = reader.result;
+          // previewImage(base64);
+          onSubmit(base64, isMobile);
+        };
+
+        reader.readAsDataURL(result);
+      },
+      error(err) {
+        console.log(err.message);
+      },
+    });
   };
 
   const onClickUpload = () => {
@@ -76,9 +134,11 @@ const Camera = (props) => {
     setCapturing(true);
 
     mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
-      mimeType: MediaRecorder.isTypeSupported('video/webm') ? 'video/webm': 'video/mp4',
+      mimeType: MediaRecorder.isTypeSupported('video/webm')
+        ? 'video/webm'
+        : 'video/mp4',
     });
-    
+
     mediaRecorderRef.current.addEventListener(
       'dataavailable',
       handleDataAvailable
@@ -114,6 +174,19 @@ const Camera = (props) => {
     }
   }, [recordedChunks]);
 
+  const base64toBlob = (base64) => {
+    const parts = base64.split(';base64,');
+    const type = parts[0].split(':')[1];
+    const decodedData = window.atob(parts[1]);
+    const uInt8Array = new Uint8Array(decodedData.length);
+
+    for (let i = 0; i < decodedData.length; ++i) {
+      uInt8Array[i] = decodedData.charCodeAt(i);
+    }
+
+    return new Blob([uInt8Array], { type: type });
+  };
+
   const blobToBase64 = (blob) => {
     return new Promise((resolve, _) => {
       const reader = new FileReader();
@@ -137,10 +210,10 @@ const Camera = (props) => {
 
         reader.onload = async () => {
           const base64 = reader.result;
-          onSubmit(base64);
+          onSubmit(base64, false);
         };
 
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(result);
       },
       error(err) {
         console.log(err.message);
@@ -243,14 +316,19 @@ const Camera = (props) => {
 
   return (
     <div className={classes.camera}>
-      <Webcam
-        className={classes.webcam}
-        ref={webcamRef}
-        videoConstraints={contraints}
-        mirrored={mirrored}
-        audio={false}
-        screenshotFormat="image/jpeg"
-      />
+      {contraints && (
+        <Webcam
+          className={classes.webcam}
+          ref={webcamRef}
+          videoConstraints={contraints}
+          mirrored={mirrored}
+          audio={false}
+          forceScreenshotSourceSize
+          screenshotFormat="image/jpeg"
+          screenshotQuality={1}
+        />
+      )}
+
       <div className={classes.overlay}>
         {overlay === 'card' && <div className={classes.card}></div>}
         {overlay === 'face' && <div className={classes.face}></div>}
