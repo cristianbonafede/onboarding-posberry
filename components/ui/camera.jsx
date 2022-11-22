@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Tooltip } from 'antd';
-import Compressor from 'compressorjs';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { FiCamera, FiImage, FiVideo } from 'react-icons/fi';
 import Webcam from 'react-webcam';
 
 import SolicitudContext from '../../store/solicitud-context';
 import { solicitud } from './../../models/solicitud';
+import { blobToBase64 } from './../../services/images';
 
 import classes from './camera.module.scss';
 
@@ -29,7 +29,7 @@ const Camera = (props) => {
   const [contraints, setContraints] = useState();
 
   const isMobile = window.innerWidth <= window.innerHeight;
-  const mirrored = type === 'video';
+  const mirrored = type === 'video' && position === 'front';
 
   const handleDevices = useCallback(
     (mediaDevices) => {
@@ -37,28 +37,32 @@ const Camera = (props) => {
       let camera = {};
       let nContraints = {};
 
-      if (isMobile && position !== 'front' ) {
-        nContraints.width = { min: 1080 };
-        nContraints.height = { min: 1920 };
-        nContraints.aspectRatio = 1.777777778;
+      if (isMobile) {
+        if (position === 'back') {
+          nContraints.width = { min: 1080 };
+          nContraints.height = { min: 1920 };
+          nContraints.aspectRatio = 1.777777778;
+        } else {
+          nContraints.width = { min: 540 };
+          nContraints.height = { min: 960 };
+          nContraints.aspectRatio = 1.777777778;
+        }
       }
 
       if (position === 'front') {
         camera = cameras[0];
 
-        alert(JSON.stringify(camera));
+        // alert(JSON.stringify(camera));
 
-        // if (camera.deviceId) {
-        //   nContraints.deviceId = camera.deviceId;
-        // } else {
+        if (camera.deviceId) {
+          nContraints.deviceId = camera.deviceId;
+        } else {
           nContraints.facingMode = 'user';
-        // }
-
-        alert(JSON.stringify(nContraints)) 
+        }
       } else {
         camera = cameras.pop();
 
-        alert(JSON.stringify(camera));
+        // alert(JSON.stringify(camera));
 
         if (camera.deviceId) {
           nContraints.deviceId = camera.deviceId;
@@ -107,29 +111,24 @@ const Camera = (props) => {
 
   const takePicture = async () => {
     const base64 = webcamRef.current.getScreenshot();
-    const file = base64toBlob(base64);
-
-    new Compressor(file, {
-      quality: 0.6,
-      async success(result) {
-        let reader = new FileReader();
-
-        reader.onload = async () => {
-          const base64 = reader.result;
-          // previewImage(base64);
-          onSubmit(base64, isMobile);
-        };
-
-        reader.readAsDataURL(result);
-      },
-      error(err) {
-        console.log(err.message);
-      },
-    });
+    onSubmit(base64, isMobile);
   };
 
   const onClickUpload = () => {
     fileRef.current.click();
+  };
+
+  const onUploadFile = async (e) => {
+    const files = e.currentTarget.files;
+    if (files.length === 0) {
+      return;
+    }
+
+    const file = files[0];
+    const base64 = await blobToBase64(file);
+    onSubmit(base64, false);
+
+    fileRef.current.value = '';
   };
 
   const recordVideo = useCallback(() => {
@@ -175,55 +174,6 @@ const Camera = (props) => {
       setRecordedChunks([]);
     }
   }, [recordedChunks]);
-
-  const base64toBlob = (base64) => {
-    const parts = base64.split(';base64,');
-    const type = parts[0].split(':')[1];
-    const decodedData = window.atob(parts[1]);
-    const uInt8Array = new Uint8Array(decodedData.length);
-
-    for (let i = 0; i < decodedData.length; ++i) {
-      uInt8Array[i] = decodedData.charCodeAt(i);
-    }
-
-    return new Blob([uInt8Array], { type: type });
-  };
-
-  const blobToBase64 = (blob) => {
-    return new Promise((resolve, _) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
-    });
-  };
-
-  const onUploadFile = (e) => {
-    const files = e.currentTarget.files;
-    if (files.length === 0) {
-      return;
-    }
-
-    const file = files[0];
-
-    new Compressor(file, {
-      quality: 0.6,
-      async success(result) {
-        let reader = new FileReader();
-
-        reader.onload = async () => {
-          const base64 = reader.result;
-          onSubmit(base64, false);
-        };
-
-        reader.readAsDataURL(result);
-      },
-      error(err) {
-        console.log(err.message);
-      },
-    });
-
-    e.currentTarget.value = '';
-  };
 
   const renderUpload = () => {
     if (!upload) {
@@ -272,16 +222,6 @@ const Camera = (props) => {
         </div>
       </Tooltip>
     );
-  };
-
-  const previewImage = (base64) => {
-    var newTab = window.open();
-    newTab.document.body.innerHTML = `<img src="${base64}">`;
-  };
-
-  const previewVideo = (base64) => {
-    var newTab = window.open();
-    newTab.document.body.innerHTML = `<video src="${base64}" controls="true">`;
   };
 
   useEffect(() => {

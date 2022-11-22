@@ -1,4 +1,6 @@
 import http from '../services/http';
+import { compressBase64Image } from '../services/images';
+import { hashSha1 } from './../services/security';
 
 const mockup = process.env.NEXT_PUBLIC_MOCKUP === 'true';
 const mockupDelay = () => {
@@ -68,6 +70,7 @@ const get = async () => {
       fechaNacimiento: '01/01/1990',
       cuil: '20-12341234-5',
       cbu: '1234123412341234123412',
+      telefono: '123456789',
     };
   }
 
@@ -84,6 +87,12 @@ const get = async () => {
 };
 
 const create = async (frente, dorso, cropFrente, cropDorso) => {
+  frente = await compressBase64Image(frente, 0.6);
+  frente = frente.substr(frente.indexOf(',') + 1);
+
+  dorso = await compressBase64Image(dorso, 0.6);
+  dorso = dorso.substr(dorso.indexOf(',') + 1);
+
   if (mockup) {
     await mockupDelay();
     return true;
@@ -92,8 +101,8 @@ const create = async (frente, dorso, cropFrente, cropDorso) => {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes`;
   const data = {
     entidadId: sessionStorage.getItem('entidad'),
-    frente: frente && frente.substr(frente.indexOf(',') + 1),
-    dorso: dorso && dorso.substr(dorso.indexOf(',') + 1),
+    frente: frente,
+    dorso: dorso,
     cropFrente: cropFrente,
     cropDorso: cropDorso,
   };
@@ -599,6 +608,8 @@ const updateAltaCuenta = async () => {
 };
 
 const updateCredenciales = async (password) => {
+  password = await hashSha1(password);
+
   if (mockup) {
     await mockupDelay();
     return true;

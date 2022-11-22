@@ -19,17 +19,19 @@ const FormOtp = () => {
   const [resend, setResend] = useState(false);
   const [valid, setValid] = useState(false);
 
-  const buttons = (
-    <React.Fragment>
-      <Button
-        block
-        type="secondary"
-        text="Reenviar"
-        disabled={!resend}
-        onClick={onClickSend}
-      />
-    </React.Fragment>
-  );
+  const renderButtons = () => {
+    return (
+      <React.Fragment>
+        <Button
+          block
+          type="secondary"
+          text="Reenviar"
+          disabled={!resend}
+          onClick={onClickSend}
+        />
+      </React.Fragment>
+    );
+  };
 
   useEffect(() => {
     if (valid) {
@@ -76,7 +78,7 @@ const FormOtp = () => {
   }
 
   return (
-    <Form buttons={buttons} onSubmit={onSubmit}>
+    <Form renderButtons={renderButtons} onSubmit={onSubmit}>
       <div className={classes.description}>
         Te enviamos un
         <Highlight primary>código de verificación</Highlight>en un mensaje de

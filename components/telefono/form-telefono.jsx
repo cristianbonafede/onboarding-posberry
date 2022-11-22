@@ -8,8 +8,30 @@ import SolicitudContext from '../../store/solicitud-context';
 
 const FormTelefono = () => {
   const context = useContext(SolicitudContext);
+  const readonly = sessionStorage.getItem('otpReadonly') === 'true';
 
+  const [form, setForm] = useState();
   const [valid, setValid] = useState(false);
+
+  useEffect(() => {
+    async function getForm() {
+      if (!readonly) {
+        return;
+      }
+
+      if (!form) {
+        const response = await solicitud.get();
+        const values = { telefono: response.telefono };
+        setForm(values);
+      }
+
+      if (context.screen === solicitud.screens.form) {
+        onSubmit(form);
+      }
+    }
+
+    getForm();
+  }, [context.screen]);
 
   useEffect(() => {
     if (valid) {
@@ -18,24 +40,28 @@ const FormTelefono = () => {
   }, [valid]);
 
   const onSubmit = async (values) => {
-    await solicitud.updateTelefono(values.telefono);
+    if (!readonly) {
+      await solicitud.updateTelefono(values.telefono);
+    }
+
     await solicitud.sendTelefonoOtp();
     context.updateForm(values);
     setValid(true);
   };
 
-  if (context.screen !== solicitud.screens.form) {
+  if (context.screen !== solicitud.screens.form || readonly) {
     return;
   }
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form values={form} onSubmit={onSubmit}>
       <Input
         label="Teléfono"
         name="telefono"
         placeholder="261234567890"
         required
         autofocus
+        readonly={readonly}
       />
     </Form>
   );

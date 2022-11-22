@@ -19,6 +19,7 @@ const HomePage = () => {
     sessionStorage.removeItem('status');
     sessionStorage.removeItem('solicitud');
     sessionStorage.removeItem('step');
+    sessionStorage.removeItem('otpReadonly');
   }, []);
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const HomePage = () => {
     }
 
     sessionStorage.setItem('solicitud', s);
+    sessionStorage.setItem('otpReadonly', true);
   }, [router.query]);
 
   useEffect(() => {

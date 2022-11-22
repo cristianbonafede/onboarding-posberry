@@ -7,7 +7,7 @@ import { FormContextProvider } from '../../store/form-context';
 import classes from './form.module.scss';
 
 const Form = (props) => {
-  const { children, centered, values, buttons, onSubmit } = props;
+  const { children, centered, values, renderButtons, onSubmit } = props;
 
   const [form] = Formd.useForm();
   const [loading, setLoading] = useState(false);
@@ -35,9 +35,9 @@ const Form = (props) => {
         <div className={classes.content}>{children}</div>
         <div
           className={classes.actions}
-          style={{ marginTop: buttons ? '-70px' : '' }}
+          style={{ marginTop: renderButtons ? '-70px' : '' }}
         >
-          {buttons && buttons}
+          {renderButtons && renderButtons()}
           <Button
             block
             type="primary"

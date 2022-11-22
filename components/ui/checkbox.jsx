@@ -47,7 +47,7 @@ const Checkbox = (props) => {
     setChecked(!checked);
 
     if (onChange) {
-      onChange(!checked);
+      onChange(!checked, context.form);
     }
   };
 

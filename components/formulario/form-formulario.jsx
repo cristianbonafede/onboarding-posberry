@@ -65,24 +65,38 @@ const FormFormulario = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Terminos & Condiciones
+            Terminos & Condiciones 
           </a>
+          para operar como comercio QR
+        </Highlight>
+      </div>
+    );
+  };
+  const renderTerminosBanco = () => {
+    return (
+      <div>
+        Acepto los
+        <Highlight primary>
+          <a
+            href="http://www.google.com.ar/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Terminos & Condiciones 
+          </a>
+          para ser cliente Banco Bind
         </Highlight>
       </div>
     );
   };
 
-  const onChangeDomicilioRepetido = (value) => {
-    let nForm = { ...form };
-
-    if (!value) {
-      return;
-    }
-
-    nForm.comercioCalle = nForm.calle;
-    nForm.comercioNumeracion = nForm.numeracion;
-    nForm.comercioMunicipalidad = nForm.municipalidad;
-    nForm.comercioProvincia = nForm.provincia;
+  const onChangeDomicilioRepetido = (value, instance) => {
+    const values = instance.getFieldsValue();
+    let nForm = { ...form, ...values };
+    nForm.comercioCalle = value ? nForm.calle : undefined;
+    nForm.comercioNumeracion = value ? nForm.numeracion : undefined;
+    nForm.comercioMunicipalidad = value ? nForm.municipalidad : undefined;
+    nForm.comercioProvincia = value ? nForm.provincia : undefined;
     setForm(nForm);
   };
 
@@ -114,6 +128,7 @@ const FormFormulario = () => {
       />
       <Checkbox label="¿Sos Sujeto Obligado (UIF)? " name="esUif" />
       <Checkbox label={renderTerminos()} name="aceptaTyc" required />
+      <Checkbox label={renderTerminosBanco()} name="aceptaTycBanco" required />
 
       <Divider />
 
@@ -130,6 +145,7 @@ const FormFormulario = () => {
         <Col xs={24} lg={24}>
           <Checkbox
             label="El domicilio de mi comercio coincide con mi domicilio personal"
+            name="domicilioDuplicado"
             onChange={onChangeDomicilioRepetido}
           />
         </Col>
