@@ -65,7 +65,7 @@ const FormFormulario = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Terminos & Condiciones 
+            Terminos & Condiciones &nbsp;
           </a>
           para operar como comercio QR
         </Highlight>
@@ -82,7 +82,7 @@ const FormFormulario = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Terminos & Condiciones 
+            Terminos & Condiciones &nbsp;
           </a>
           para ser cliente Banco Bind
         </Highlight>

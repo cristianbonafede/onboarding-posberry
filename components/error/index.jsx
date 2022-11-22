@@ -20,6 +20,7 @@ import RechazoMatrizRiesgo from './errores/rechazo-matriz-riesgo';
 import SolicitudPreviaAprobada from './errores/solicitud-previa-aprobada';
 import ValidacionFacialIncompleta from './errores/valdiacion-facial-incompleta';
 
+import CredencialesIncompletas from './errores/credenciales-incompleta';
 import classes from './index.module.scss';
 
 const Error = () => {
@@ -76,6 +77,9 @@ const Error = () => {
 
       case 'CREDENCIALES_NO_VALIDAS':
         return <CredencialesNoValidas />;
+
+      case 'CREDENCIALES_INCOMPLETAS':
+          return <CredencialesIncompletas />;
 
       default:
         return <Generico />;

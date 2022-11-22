@@ -31,7 +31,7 @@ const Formulario = () => {
   const onFinish = () => {
     const status = sessionStorage.getItem('status');
 
-    if (status === solicitud.status.pending) {
+    if (status === solicitud.status.validation) {
       context.nextStep(router, '/procesando');
       return;
     }

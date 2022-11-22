@@ -40,6 +40,8 @@ const actions = {
   updateLegajoDigital: 'update-legajo-digital',
   updateAltaCuenta: 'update-alta-cuenta',
   updateCredenciales: 'update-credenciales',
+  updateDispositivo: 'update-dispositivo',
+  updateDispositivoPJ: 'update-dispositivo-pj',
 };
 
 const screens = {
@@ -54,6 +56,7 @@ const status = {
   pending: '1',
   approved: '2',
   rejected: '3',
+  validation: '4',
 };
 
 const get = async () => {
@@ -137,6 +140,8 @@ const createJuridica = async (nombre, cuit, rubro, email, telefono) => {
 
   const response = await http.post(url, data);
   if (!response.error) {
+    const solicitud = response.data.id;
+    sessionStorage.setItem('solicitud', solicitud);
     return true;
   }
 
@@ -603,7 +608,9 @@ const updateAltaCuenta = async () => {
     return true;
   }
 
-  window.location.replace(`error?code=${response.codigo}`);
+  // window.location.replace(`error?code=${response.codigo}`);
+  window.location.replace(`procesando`);
+
   return false;
 };
 
@@ -622,6 +629,42 @@ const updateCredenciales = async (password) => {
   };
 
   const response = await http.patch(url, data);
+  if (!response.error) {
+    return true;
+  }
+
+  window.location.replace(`error?code=${response.codigo}`);
+  return false;
+};
+
+const updateDispositivo = async (urlPJ) => {
+  if (mockup) {
+    await mockupDelay();
+    return true;
+  }
+
+  let response = await fetch('https://www.cloudflare.com/cdn-cgi/trace', {
+    mode: 'cors',
+  });
+  const text = await response.text();
+  const cfData = Object.fromEntries(
+    text
+      .trim()
+      .split('\n')
+      .map((e) => e.split('='))
+  );
+
+  const id = sessionStorage.getItem('solicitud');
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes${
+    urlPJ ?? ''
+  }/${id}/dispositivo`;
+
+  const data = {
+    ip: cfData.ip,
+    dispositivo: cfData.uag,
+  };
+
+  response = await http.patch(url, data);
   if (!response.error) {
     return true;
   }
@@ -730,6 +773,12 @@ const runAction = async (action, form) => {
     case actions.updateCredenciales:
       return await updateCredenciales(form.password);
 
+    case actions.updateDispositivo:
+      return await updateDispositivo();
+
+    case actions.updateDispositivoPJ:
+      return await updateDispositivo('pj');
+
     default:
       return false;
   }
@@ -772,6 +821,11 @@ const stepsFisica = [
       },
       {
         id: actions.updateNosis,
+        title: '',
+        completed: false,
+      },
+      {
+        id: actions.updateDispositivo,
         title: '',
         completed: false,
       },
@@ -845,17 +899,17 @@ const stepsFisica = [
         title: '',
         completed: false,
       },
+      {
+        id: actions.updateAltaCuenta,
+        title: '',
+        completed: false,
+      },
     ],
   },
   {
     url: '/credenciales',
     title: 'Credenciales Banco',
     actions: [
-      {
-        id: actions.updateAltaCuenta,
-        title: 'Creando cuenta',
-        completed: false,
-      },
       {
         id: actions.updateCredenciales,
         title: 'Actualizando credenciales',
@@ -874,6 +928,11 @@ const stepsJuridica = [
       {
         id: actions.createJuridica,
         title: 'Creando solicitud',
+        completed: false,
+      },
+      {
+        id: actions.updateDispositivoPJ,
+        title: '',
         completed: false,
       },
     ],

@@ -14,7 +14,7 @@ axios.interceptors.response.use(
     console.log(error);
     const nError = {
       error: true,
-      codigo: error.response.data.errores[0].codigo,
+      codigo: error.response.data?.errores[0].codigo ?? '0',
     };
     return nError;
   }
