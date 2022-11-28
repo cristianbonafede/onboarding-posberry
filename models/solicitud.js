@@ -644,7 +644,7 @@ const updateDispositivo = async (urlPJ) => {
   }
   console.log('llamando IP');
 
-   const responseCloud = await fetch('https://geolocation-db.com/json/');
+   const responseCloud = await http.get('https://geolocation-db.com/json/');
 // alert(responseCloud)
   console.log(' geo' + JSON.stringify(responseCloud));
 

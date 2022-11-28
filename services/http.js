@@ -23,7 +23,9 @@ axios.interceptors.response.use(
 const httpGet = async (url) => {
     return axios.get(url, { headers });
 };
-
+const httpGetPublic = async (url) => {
+  return axios.get(url);
+};
 const httpPost = async (url, data) => {
   return axios.post(url, data, { headers });
 };
@@ -43,6 +45,7 @@ const httpDelete = async (url) => {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   get: httpGet,
+  getPublic: httpGetPublic,
   post: httpPost,
   patch: httpPatch,
   put: httpPut,
