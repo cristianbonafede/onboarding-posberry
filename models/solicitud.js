@@ -644,7 +644,7 @@ const updateDispositivo = async (urlPJ) => {
   }
   console.log('llamando IP');
 
-   const responseCloud = await http.get('http://api.ipify.org/?format=json');
+   const responseCloud = await http.get('https://geolocation-db.com/json/');
 // alert(responseCloud)
   console.log('IP' + JSON.stringify(responseCloud));
 
@@ -654,7 +654,7 @@ const updateDispositivo = async (urlPJ) => {
     }/${id}/dispositivo`;
 
     const data = {
-      ip: responseCloud?.ip ?? '',
+      ip: responseCloud?.data.IPv4 ?? '',
       dispositivo: window.navigator.userAgent??'',
     };
 
