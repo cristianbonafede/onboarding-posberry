@@ -642,11 +642,7 @@ const updateDispositivo = async (urlPJ) => {
     await mockupDelay();
     return true;
   }
-  console.log('llamando IP');
-
-   const responseCloud = await http.get('https://geolocation-db.com/json/');
-// alert(responseCloud)
-  console.log(' geo' + JSON.stringify(responseCloud));
+   const responseIp = await http.getPublic('https://geolocation-db.com/json/');
 
     const id = sessionStorage.getItem('solicitud');
     const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes${
@@ -654,8 +650,8 @@ const updateDispositivo = async (urlPJ) => {
     }/${id}/dispositivo`;
 
     const data = {
-      ip: responseCloud?.data?.IPv4 ?? '',
-      dispositivo: window.navigator.userAgent??'',
+      ip: responseIp?.data?.IPv4 ?? '',
+      dispositivo: window?.navigator?.userAgent??'',
     };
 
     const response = await http.patch(url, data);
