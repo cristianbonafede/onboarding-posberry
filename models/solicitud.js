@@ -662,7 +662,7 @@ const updateDispositivo = async (urlPJ) => {
     }/${id}/dispositivo`;
 
     const data = {
-      ip: responseCloud.ip,
+      ip: responseCloud.ip ?? '0',
       dispositivo: window.navigator.userAgent,
     };
 
