@@ -642,6 +642,7 @@ const updateDispositivo = async (urlPJ) => {
     await mockupDelay();
     return true;
   }
+  console.log('llamando IP');
 
    const responseCloud = await http.get('https://api.ipify.org/?format=json', headers = {
     'Access-Control-Allow-Origin': '*',
