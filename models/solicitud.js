@@ -643,8 +643,8 @@ const updateDispositivo = async (urlPJ) => {
     return true;
   }
 
-   const responseCloud = await fetch('https://api.ipify.org/?format=json', {
-    mode: 'cors',
+   const responseCloud = await http.get('https://api.ipify.org/?format=json', headers = {
+    'Access-Control-Allow-Origin': '*',
   });
 // alert(responseCloud)
   console.log('IP' + responseCloud);
