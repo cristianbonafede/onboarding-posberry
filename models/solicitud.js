@@ -643,19 +643,19 @@ const updateDispositivo = async (urlPJ) => {
     return true;
   }
 
-   const responseCloud = await fetch('https://www.cloudflare.com/cdn-cgi/trace', {
-    mode: 'cors',
-  });
-  const text = await responseCloud.text();
-  console.log(text);
-  if(text){
+   const responseCloud = await http.get('https://api.ipify.org/?format=json');
+  // const text = await responseCloud.json();
+  console.log(responseCloud);
+  if(responseCloud){
 
-    const cfData = Object.fromEntries(
-      text
-        .trim()
-        .split('\n')
-        .map((e) => e.split('='))
-    );
+    // const cfData = Object.fromEntries(
+    //   text
+    //     .trim()
+    //     .split('\n')
+    //     .map((e) => e.split('='))
+    // );
+try {
+  
 
     const id = sessionStorage.getItem('solicitud');
     const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes${
@@ -663,8 +663,8 @@ const updateDispositivo = async (urlPJ) => {
     }/${id}/dispositivo`;
     debugger
     const data = {
-      ip: cfData.ip,
-      dispositivo: cfData.uag,
+      ip: responseCloud.ip,
+      dispositivo: window.navigator.userAgent,
     };
 
     const response = await http.patch(url, data);
@@ -674,6 +674,9 @@ const updateDispositivo = async (urlPJ) => {
 
     window.location.replace(`error?code=${response.codigo}`);
     return false;
+  } catch (error) {
+  
+  }
   }
   return true;
 };
