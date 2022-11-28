@@ -647,14 +647,6 @@ const updateDispositivo = async (urlPJ) => {
    const responseCloud = await http.get('http://api.ipify.org/?format=json');
 // alert(responseCloud)
   console.log('IP' + JSON.stringify(responseCloud));
-  if(responseCloud){
-
-    // const cfData = Object.fromEntries(
-    //   text
-    //     .trim()
-    //     .split('\n')
-    //     .map((e) => e.split('='))
-    // );
 
     const id = sessionStorage.getItem('solicitud');
     const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes${
@@ -662,8 +654,8 @@ const updateDispositivo = async (urlPJ) => {
     }/${id}/dispositivo`;
 
     const data = {
-      ip: responseCloud.ip ?? '0',
-      dispositivo: window.navigator.userAgent,
+      ip: responseCloud?.ip ?? '',
+      dispositivo: window.navigator.userAgent??'',
     };
 
     const response = await http.patch(url, data);
@@ -671,10 +663,8 @@ const updateDispositivo = async (urlPJ) => {
       return true;
     }
 
-    window.location.replace(`error?code=${response.codigo}`);
     return false;
-  }
-  return true;
+  
 };
 
 const runAction = async (action, form) => {
