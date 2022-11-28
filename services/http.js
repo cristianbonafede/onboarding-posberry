@@ -20,8 +20,15 @@ axios.interceptors.response.use(
   }
 );
 
-const httpGet = async (url) => {
+const httpGet = async (url, head) => {
+  if(head)
+  {
+    return axios.get(url, { headers:head });
+
+  }
+  else
   return axios.get(url, { headers });
+
 };
 
 const httpPost = async (url, data) => {
