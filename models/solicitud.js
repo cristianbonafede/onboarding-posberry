@@ -644,9 +644,9 @@ const updateDispositivo = async (urlPJ) => {
   }
   console.log('llamando IP');
 
-   const responseCloud = await http.get('https://cors-anywhere.herokuapp.com/http://api.ipify.org/?format=json');
+   const responseCloud = await http.get('http://api.ipify.org/?format=json');
 // alert(responseCloud)
-  console.log('IP' + responseCloud);
+  console.log('IP' + JSON.stringify(responseCloud));
   if(responseCloud){
 
     // const cfData = Object.fromEntries(
@@ -660,7 +660,7 @@ const updateDispositivo = async (urlPJ) => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes${
       urlPJ ?? ''
     }/${id}/dispositivo`;
-    debugger
+
     const data = {
       ip: responseCloud.ip,
       dispositivo: window.navigator.userAgent,
