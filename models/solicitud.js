@@ -644,9 +644,7 @@ const updateDispositivo = async (urlPJ) => {
   }
   console.log('llamando IP');
 
-   const responseCloud = await http.get('https://api.ipify.org/?format=json', {
-    'Access-Control-Allow-Origin': '*',
-  });
+   const responseCloud = await http.get('https://cors-anywhere.herokuapp.com/http://api.ipify.org/?format=json');
 // alert(responseCloud)
   console.log('IP' + responseCloud);
   if(responseCloud){
