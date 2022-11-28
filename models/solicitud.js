@@ -646,7 +646,7 @@ const updateDispositivo = async (urlPJ) => {
 
    const responseCloud = await http.get('https://geolocation-db.com/json/');
 // alert(responseCloud)
-  console.log('IP' + JSON.stringify(responseCloud));
+  console.log(' geo' + JSON.stringify(responseCloud));
 
     const id = sessionStorage.getItem('solicitud');
     const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes${
