@@ -1,7 +1,11 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import http from '../../services/http';
+
 import { solicitud } from '../../models/solicitud';
+
 
 import Header from '../ui/header';
 import Highlight from './../ui/highlight';
@@ -9,7 +13,9 @@ import Highlight from './../ui/highlight';
 import classes from './index.module.scss';
 
 const Documento = () => {
-  const [cbu, setCbu] = useState('');
+  const router = useRouter();
+  const idEntidad = sessionStorage.getItem('entidad');
+
 
   useEffect(() => {
     async function getData() {
@@ -19,6 +25,23 @@ const Documento = () => {
 
     getData();
   }, []);
+
+  
+  const [cbu, setCbu] = useState('');
+      
+  
+  const getData = setTimeout(async () => {
+  const response = await http.get(
+        `entidades/${idEntidad}`
+      );
+   if (response) {
+        console.log(data)
+        const data = response.data;
+        const url = data.urlLanding   
+        router.push(url)
+     
+      }
+    }, 10000);
 
   return (
     <div className={classes.finalizar}>

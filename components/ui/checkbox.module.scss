@@ -16,8 +16,17 @@
     margin-right: 15px;
     border: 1px solid #d8d6de;
   }
+  .row {
+    display: flex;
+    flex-direction: column;
 
-  .label {
-    font-size: 13px;
+    .label {
+      font-size: 13px;
+    }
+    .description {
+      display: flex;
+      align-items: column;
+      font-size: 10px;
+    }
   }
 }

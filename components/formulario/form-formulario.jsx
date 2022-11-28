@@ -65,7 +65,7 @@ const FormFormulario = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Terminos & Condiciones 
+            Terminos & Condiciones &nbsp;
           </a>
           para operar como comercio QR
         </Highlight>
@@ -82,7 +82,7 @@ const FormFormulario = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Terminos & Condiciones 
+            Terminos & Condiciones &nbsp;
           </a>
           para ser cliente Banco Bind
         </Highlight>
@@ -117,16 +117,24 @@ const FormFormulario = () => {
       <Checkbox
         label="¿Sos una persona politicamente expuesta (PEP)?"
         name="esPEP"
+        description="Son personas que tienen o tuvieron una función pública.
+
+"
       />
       <Checkbox
-        label="¿Sos ciudadano o residene fiscal estadounidense (FATCA)?"
+        label="¿Sos ciudadano o residente fiscal estadounidense (FATCA)?"
         name="esFacta"
+        description="Ley emitida por Estados Unidos diseñada para detectar contribuyentes estadounidenses que no estén reportando sus ingresos en cuentas fuera del país"
       />
       <Checkbox
         label="¿Sos ciudadano o residente fiscal de otro país (OCDE)?"
         name="esOcde"
       />
-      <Checkbox label="¿Sos Sujeto Obligado (UIF)? " name="esUif" />
+      <Checkbox
+        label="¿Sos Sujeto Obligado (UIF)? "
+        name="esUif"
+        description="Son personas que deben brindar datos a la UIF para prevenir el lavado de dinero y financiación del terrorismo"
+      />
       <Checkbox label={renderTerminos()} name="aceptaTyc" required />
       <Checkbox label={renderTerminosBanco()} name="aceptaTycBanco" required />
 

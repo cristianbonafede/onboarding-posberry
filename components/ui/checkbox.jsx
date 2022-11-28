@@ -7,7 +7,7 @@ import FormContext from '../../store/form-context';
 import classes from './checkbox.module.scss';
 
 const Checkbox = (props) => {
-  const { label, name, required, validators, onChange } = props;
+  const { label, name, required, validators, onChange, description } = props;
 
   const context = useContext(FormContext);
 
@@ -57,7 +57,12 @@ const Checkbox = (props) => {
         <div className={classes.box} style={renderStyle()}>
           <FaCheck />
         </div>
-        <div className={classes.label}>{label}</div>
+        <div className={classes.row}>
+          <div className={classes.label}>
+            <b>{label}</b>
+          </div>
+          <div className={classes.description}>{description}</div>{' '}
+        </div>
       </div>
       <Inputd className="hidden" />
     </Form.Item>
