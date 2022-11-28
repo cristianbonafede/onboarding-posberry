@@ -643,8 +643,10 @@ const updateDispositivo = async (urlPJ) => {
     return true;
   }
 
-   const responseCloud = await http.get('https://api.ipify.org/?format=json');
-  // const text = await responseCloud.json();
+   const responseCloud = await fetch('https://api.ipify.org/?format=json', {
+    mode: 'cors',
+  });
+
   console.log(responseCloud);
   if(responseCloud){
 
@@ -654,8 +656,6 @@ const updateDispositivo = async (urlPJ) => {
     //     .split('\n')
     //     .map((e) => e.split('='))
     // );
-try {
-  
 
     const id = sessionStorage.getItem('solicitud');
     const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes${
@@ -674,9 +674,6 @@ try {
 
     window.location.replace(`error?code=${response.codigo}`);
     return false;
-  } catch (error) {
-  
-  }
   }
   return true;
 };
