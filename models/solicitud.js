@@ -646,7 +646,7 @@ const updateDispositivo = async (urlPJ) => {
    const responseCloud = await fetch('https://api.ipify.org/?format=json', {
     mode: 'cors',
   });
-
+alert(responseCloud)
   console.log(responseCloud);
   if(responseCloud){
 
