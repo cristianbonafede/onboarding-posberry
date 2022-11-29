@@ -21,8 +21,9 @@ axios.interceptors.response.use(
 );
 
 const httpGet = async (url) => {
-    return axios.get(url, { headers });
+  return axios.get(url, { headers });
 };
+
 const httpGetPublic = async (url) => {
   return axios.get(url);
 };

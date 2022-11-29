@@ -57,6 +57,8 @@ const status = {
   approved: '2',
   rejected: '3',
   validation: '4',
+  pendingCredentials: '5',
+  errorBind: '6'
 };
 
 const get = async () => {
@@ -446,6 +448,7 @@ const update = async (
   esOcde,
   esUif,
   aceptaTyc,
+  aceptaTycBanco,
   comercioNombre,
   comercioCalle,
   comercioNumeracion,
@@ -466,6 +469,7 @@ const update = async (
     esOcde: esOcde,
     esUif: esUif,
     aceptaTyc: aceptaTyc,
+    aceptaTycBanco: aceptaTycBanco,
     nombreFantasia: comercioNombre,
     comercioCalle: comercioCalle,
     comercioNumeracion: comercioNumeracion,
@@ -648,20 +652,17 @@ const updateDispositivo = async (urlPJ) => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes${
       urlPJ ?? ''
     }/${id}/dispositivo`;
-
     const data = {
       ip: responseIp?.data?.IPv4 ?? '',
       dispositivo: window?.navigator?.userAgent??'',
     };
-
     const response = await http.patch(url, data);
     if (!response.error) {
       return true;
     }
-
     return false;
-  
 };
+
 
 const runAction = async (action, form) => {
   switch (action.id) {
@@ -732,6 +733,7 @@ const runAction = async (action, form) => {
         form.esOcde,
         form.esUif,
         form.aceptaTyc,
+        form.aceptaTycBanco,
         form.comercioNombre,
         form.comercioCalle,
         form.comercioNumeracion,

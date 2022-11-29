@@ -6,10 +6,12 @@ import Form from '../ui/form';
 import Input from '../ui/input';
 import Select from './../ui/select';
 
+import { entidad } from '../../models/entidad';
 import { solicitud } from '../../models/solicitud';
 import SolicitudContext from '../../store/solicitud-context';
 import Highlight from './../ui/highlight';
 
+import { openBase64Pdf } from './../../services/files';
 import classes from './form-formulario.module.scss';
 
 const FormFormulario = () => {
@@ -18,6 +20,9 @@ const FormFormulario = () => {
   const [form, setForm] = useState();
   const [valid, setValid] = useState(false);
   const [estadosCivil, setEstadosCivil] = useState([]);
+
+  const [terminos, setTerminos] = useState();
+  const [terminosBanco, setTerminosBanco] = useState();
 
   useEffect(() => {
     const list = [
@@ -33,8 +38,24 @@ const FormFormulario = () => {
 
   useEffect(() => {
     async function getForm() {
-      const response = await solicitud.get();
-      setForm(response);
+      let response = {};
+
+      response = await entidad.getTerminos();
+      if (response) {
+        console.log(response);
+        setTerminos(response);
+      }
+
+      response = await entidad.getTerminosBanco();
+      if (response) {
+        console.log(response);
+        setTerminosBanco(response);
+      }
+
+      response = await solicitud.get();
+      if (response) {
+        setForm(response);
+      }
     }
 
     getForm();
@@ -46,48 +67,42 @@ const FormFormulario = () => {
     }
   }, [valid]);
 
-  const onSubmit = (values) => {
-    context.updateForm(values);
-    setValid(true);
-  };
-
-  if (context.screen !== solicitud.screens.form) {
-    return;
-  }
-
   const renderTerminos = () => {
     return (
       <div>
         Acepto los
         <Highlight primary>
-          <a
-            href="http://www.google.com.ar/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Terminos & Condiciones &nbsp;
-          </a>
+          <a>Terminos & Condiciones &nbsp;</a>
           para operar como comercio QR
         </Highlight>
       </div>
     );
   };
+
   const renderTerminosBanco = () => {
     return (
       <div>
         Acepto los
         <Highlight primary>
-          <a
-            href="http://www.google.com.ar/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Terminos & Condiciones &nbsp;
-          </a>
+          <a>Terminos & Condiciones &nbsp;</a>
           para ser cliente Banco Bind
         </Highlight>
       </div>
     );
+  };
+
+  const onClickTerminos = async (checked) => {
+    if (!terminos || !checked) {
+      return;
+    }
+    openBase64Pdf(terminos.contenido);
+  };
+
+  const onClickTerminosBanco = async (checked) => {
+    if (!terminosBanco || !checked) {
+      return;
+    }
+    openBase64Pdf(terminosBanco.contenido);
   };
 
   const onChangeDomicilioRepetido = (value, instance) => {
@@ -99,6 +114,15 @@ const FormFormulario = () => {
     nForm.comercioProvincia = value ? nForm.provincia : undefined;
     setForm(nForm);
   };
+
+  const onSubmit = (values) => {
+    context.updateForm(values);
+    setValid(true);
+  };
+
+  if (context.screen !== solicitud.screens.form) {
+    return;
+  }
 
   return (
     <Form values={form} onSubmit={onSubmit}>
@@ -135,8 +159,18 @@ const FormFormulario = () => {
         name="esUif"
         description="Son personas que deben brindar datos a la UIF para prevenir el lavado de dinero y financiación del terrorismo"
       />
-      <Checkbox label={renderTerminos()} name="aceptaTyc" required />
-      <Checkbox label={renderTerminosBanco()} name="aceptaTycBanco" required />
+      <Checkbox
+        label={renderTerminos()}
+        name="aceptaTyc"
+        required
+        onChange={onClickTerminos}
+      />
+      <Checkbox
+        label={renderTerminosBanco()}
+        name="aceptaTycBanco"
+        required
+        onChange={onClickTerminosBanco}
+      />
 
       <Divider />
 
