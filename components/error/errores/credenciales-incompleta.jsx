@@ -11,11 +11,12 @@ const CredencialesIncompletas = () => {
   return (
     <div>
       <div className={classes.title}>
-        <Highlight primary>¡Ups! Algo salió mal</Highlight>
+        <Highlight primary>¡Ya casi terminamos!</Highlight>
       </div>
       <div className={classes.description}>
-      Pudimos validar tu identidad y crear tu cuenta satisfactoriamente, pero ha ocurrido un error al generar las credenciales de tu homebanking. 
-Por eso nos comunicaremos en breve con vos para que puedas reintentarlo.
+  ¡Pudimos completar el proceso satisfactoriamente!
+  <br/>
+  En breve, nos comunicaremos con vos para terminar el proceso de alta.
       </div>
 
     </div>

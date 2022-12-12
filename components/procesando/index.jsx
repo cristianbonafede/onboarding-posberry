@@ -18,11 +18,10 @@ const Procesando = () => {
           />
         </div>
         <div className={classes.text}>
-          <div className={classes.title}>Estamos procesando tu solicitud</div>
-          <div>
-            En breve nos estaremos comunicando con vos para comentarte que
-            beneficios podemos ofrecerte.
-          </div>
+          <div className={classes.title}>¡Ya casi terminamos!</div>
+          ¡Pudimos completar el proceso satisfactoriamente!
+          <br/>
+          En breve, nos comunicaremos con vos para terminar el proceso de alta.
         </div>
       </div>
     </div>
