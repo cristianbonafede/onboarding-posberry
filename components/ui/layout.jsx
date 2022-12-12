@@ -57,6 +57,8 @@ const Layout = (props) => {
             Tomará unos pocos minutos. Te recomendamos
             <Highlight primary>tener a mano tu DNI</Highlight> y ubicarte en un
             lugar con buena luz.
+            <br/>
+            Recordá que es necesario tener una actividad en AFIP.
           </div>
         </div>
       );
