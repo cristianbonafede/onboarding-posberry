@@ -618,7 +618,7 @@ const updateAltaCuenta = async () => {
   return false;
 };
 
-const updateCredenciales = async (password) => {
+const updateCredenciales = async (usuario, password) => {
   password = await hashSha1(password);
 
   if (mockup) {
@@ -629,6 +629,7 @@ const updateCredenciales = async (password) => {
   const id = sessionStorage.getItem('solicitud');
   const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/credenciales`;
   const data = {
+    usuario: usuario,
     password: password,
   };
 
@@ -763,7 +764,7 @@ const runAction = async (action, form) => {
       return await updateAltaCuenta();
 
     case actions.updateCredenciales:
-      return await updateCredenciales(form.password);
+      return await updateCredenciales(form.usuario, form.password);
 
     case actions.updateDispositivo:
       return await updateDispositivo();

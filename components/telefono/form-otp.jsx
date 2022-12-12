@@ -19,6 +19,8 @@ const FormOtp = () => {
   const [resend, setResend] = useState(false);
   const [valid, setValid] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const renderButtons = () => {
     return (
       <React.Fragment>
@@ -28,6 +30,7 @@ const FormOtp = () => {
           text="Reenviar"
           disabled={!resend}
           onClick={onClickSend}
+          loading={loading}
         />
       </React.Fragment>
     );
@@ -56,7 +59,9 @@ const FormOtp = () => {
   }, [context.screen, resend]);
 
   const onClickSend = async () => {
+    setLoading(true);
     await solicitud.sendTelefonoOtp();
+    setLoading(false);
     setResend(false);
   };
 

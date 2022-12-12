@@ -159,6 +159,7 @@ const FormCredenciales = () => {
 
   return (
     <Form onSubmit={onSubmit}>
+      <Input label="Usuario" name="usuario" required autofocus />
       <Input
         label="Contraseña"
         name="password"

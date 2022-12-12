@@ -72,8 +72,13 @@ const FormFormulario = () => {
       <div>
         Acepto los
         <Highlight primary>
-          <a>Terminos & Condiciones &nbsp;</a>
-          para operar como comercio QR
+          <a
+            onClick={() => {
+              openBase64Pdf(terminos.contenido);
+            }}
+          >
+            Terminos & Condiciones &nbsp;para operar como comercio QR
+          </a>
         </Highlight>
       </div>
     );
@@ -84,8 +89,13 @@ const FormFormulario = () => {
       <div>
         Acepto los
         <Highlight primary>
-          <a>Terminos & Condiciones &nbsp;</a>
-          para ser cliente Banco Bind
+          <a
+            onClick={() => {
+              openBase64Pdf(terminosBanco.contenido);
+            }}
+          >
+            Terminos & Condiciones &nbsp;para ser cliente Banco Bind
+          </a>
         </Highlight>
       </div>
     );
@@ -95,14 +105,12 @@ const FormFormulario = () => {
     if (!terminos || !checked) {
       return;
     }
-    openBase64Pdf(terminos.contenido);
   };
 
   const onClickTerminosBanco = async (checked) => {
     if (!terminosBanco || !checked) {
       return;
     }
-    openBase64Pdf(terminosBanco.contenido);
   };
 
   const onChangeDomicilioRepetido = (value, instance) => {
