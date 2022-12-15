@@ -3,10 +3,12 @@ import { createContext, useState } from 'react';
 import { solicitud } from '../models/solicitud';
 
 const SolicitudContext = createContext({
+  steps: [],
   step: {},
   screen: '',
   form: {},
   formProperty: '',
+  updateSteps: async () => {},
   changeScreen: (value) => {},
   updateStep: (router) => {},
   validateStep: (router) => {},
@@ -17,21 +19,30 @@ const SolicitudContext = createContext({
 
 export function SolicitudContextProvider(props) {
   // State
+  const [steps, setSteps] = useState([]);
   const [step, setStep] = useState();
   const [screen, setScreen] = useState(solicitud.screens.instructions);
   const [form, setForm] = useState({});
   const [formProperty, setFormProperty] = useState();
 
   // Methods
+  const updateSteps = async () => {
+    const values = await solicitud.getSteps();
+    setSteps(values);
+  };
+
   const changeScreen = (value) => {
     setScreen(value);
   };
 
   const validateStep = (router) => {
+    if (steps.length === 0) {
+      return false;
+    }
+
     const allowedUrl = sessionStorage.getItem('step');
     const currentUrl = router.pathname;
 
-    const steps = solicitud.getSteps();
     let allowedIndex = steps.findIndex((x) => x.url === allowedUrl);
     allowedIndex = allowedIndex == -1 ? 0 : allowedIndex;
     const currentIndex = steps.findIndex((x) => x.url === currentUrl);
@@ -52,7 +63,6 @@ export function SolicitudContextProvider(props) {
       return;
     }
 
-    const steps = solicitud.getSteps();
     const url = router.pathname;
     const nStep = steps.find((x) => x.url === url);
     setStep(nStep);
@@ -65,7 +75,6 @@ export function SolicitudContextProvider(props) {
       return;
     }
 
-    const steps = solicitud.getSteps();
     const index = steps.indexOf(step);
     const nStep = steps[index + 1];
 
@@ -82,10 +91,12 @@ export function SolicitudContextProvider(props) {
   };
 
   const context = {
+    steps: steps,
     step: step,
     screen: screen,
     form: form,
     formProperty: formProperty,
+    updateSteps: updateSteps,
     changeScreen: changeScreen,
     updateStep: updateStep,
     validateStep: validateStep,

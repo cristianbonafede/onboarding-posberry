@@ -26,7 +26,7 @@ const Credenciales = () => {
     }
     setVisible(true);
     context.updateStep(router);
-  }, []);
+  }, [context.steps]);
 
   const onFinish = () => {
     context.nextStep(router);
@@ -44,8 +44,9 @@ const Credenciales = () => {
         vertical
         nextScreen={solicitud.screens.form}
       >
-        Creamos una cuenta en Banco Industrial donde acreditaremos en línea tus cobros con QR.
-        Creá tu <Highlight primary>usuario y contraseña</Highlight>
+        Creamos una cuenta en Banco Industrial donde acreditaremos en línea tus
+        cobros con QR. Creá tu{' '}
+        <Highlight primary>usuario y contraseña</Highlight>
         para ingresar al Homebanking Bind24.
       </Instructions>
       <FormCredenciales />

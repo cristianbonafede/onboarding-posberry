@@ -46,7 +46,6 @@ const HomePage = () => {
   useEffect(() => {
     async function getEntidad() {
       const { e } = router.query;
-
       if (!e) {
         return;
       }

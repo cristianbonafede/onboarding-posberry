@@ -26,7 +26,7 @@ const Formulario = () => {
     }
     setVisible(true);
     context.updateStep(router);
-  }, []);
+  }, [context.steps]);
 
   const onFinish = () => {
     const status = sessionStorage.getItem('status');

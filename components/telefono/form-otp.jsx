@@ -14,6 +14,7 @@ import classes from './form-otp.module.scss';
 const FormOtp = () => {
   const router = useRouter();
   const context = useContext(SolicitudContext);
+  const readonly = sessionStorage.getItem('otpReadonly') === 'true';
 
   const [error, setError] = useState(false);
   const [resend, setResend] = useState(false);
@@ -24,6 +25,15 @@ const FormOtp = () => {
   const renderButtons = () => {
     return (
       <React.Fragment>
+   {!readonly && (
+        <Button
+          block
+          type="secondary"
+          text="Cambiar el teléfono"
+          onClick={onClickBack}
+        />
+   )}
+
         <Button
           block
           type="secondary"
@@ -63,6 +73,13 @@ const FormOtp = () => {
     await solicitud.sendTelefonoOtp();
     setLoading(false);
     setResend(false);
+  };
+
+  const onClickBack = async () => {
+    if(readonly){
+      return;
+    }
+    return context.changeScreen(solicitud.screens.form);
   };
 
   const onSubmit = async (values) => {

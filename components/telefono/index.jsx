@@ -27,7 +27,7 @@ const Telefono = () => {
     }
     setVisible(true);
     context.updateStep(router);
-  }, []);
+  }, [context.steps]);
 
   const onFinish = () => {
     context.nextStep(router);

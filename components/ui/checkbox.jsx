@@ -53,8 +53,8 @@ const Checkbox = (props) => {
 
   return (
     <Form.Item name={name} rules={setRules()}>
-      <div className={classes.checkbox} onClick={onClick}>
-        <div className={classes.box} style={renderStyle()}>
+      <div className={classes.checkbox}>
+        <div className={classes.box} style={renderStyle()} onClick={onClick}>
           <FaCheck />
         </div>
         <div className={classes.row}>

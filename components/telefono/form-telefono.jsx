@@ -33,12 +33,6 @@ const FormTelefono = () => {
     getForm();
   }, [context.screen]);
 
-  useEffect(() => {
-    if (valid) {
-      context.changeScreen(solicitud.screens.otp);
-    }
-  }, [valid]);
-
   const onSubmit = async (values) => {
     if (!readonly) {
       await solicitud.updateTelefono(values.telefono);
@@ -46,7 +40,7 @@ const FormTelefono = () => {
 
     await solicitud.sendTelefonoOtp();
     context.updateForm(values);
-    setValid(true);
+    context.changeScreen(solicitud.screens.otp);
   };
 
   if (context.screen !== solicitud.screens.form || readonly) {

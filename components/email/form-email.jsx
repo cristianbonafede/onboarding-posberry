@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import Input from '../ui/input';
 import Form from './../ui/form';
@@ -11,17 +11,11 @@ const FormEmail = () => {
 
   const [valid, setValid] = useState(false);
 
-  useEffect(() => {
-    if (valid) {
-      context.changeScreen(solicitud.screens.otp);
-    }
-  }, [valid]);
-
   const onSubmit = async (values) => {
     await solicitud.updateEmail(values.email);
     await solicitud.sendEmailOtp();
     context.updateForm(values);
-    setValid(true);
+    context.changeScreen(solicitud.screens.otp);
   };
 
   if (context.screen !== solicitud.screens.form) {

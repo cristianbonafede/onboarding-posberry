@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
 
 import SolicitudContext from '../../store/solicitud-context';
-import { solicitud } from './../../models/solicitud';
 
 import classes from './header.module.scss';
 
@@ -11,6 +10,7 @@ const Header = () => {
   const router = useRouter();
   const context = useContext(SolicitudContext);
 
+  const [title, setTitle] = useState();
   const [visible, setVisible] = useState(false);
   const [colorAccent, setColorAccent] = useState();
   const [colorPrimary, setColorPrimary] = useState();
@@ -19,16 +19,38 @@ const Header = () => {
   const [previousStep, setPreviousStep] = useState();
 
   useEffect(() => {
-    context.updateStep(router);
+    if (!context.step) {
+      setTitle('');
+      return;
+    }
 
-    const steps = solicitud.getSteps();
-    const step = steps.find((x) => x.url === router.pathname);
-    const index = steps.indexOf(step) - 1;
+    if (context.step.url === '/finalizar') {
+      setTitle('Finalizado');
+      return;
+    }
+
+    if (context.step.url === '/procesando') {
+      setTitle('Pendiente');
+      return;
+    }
+
+    const index = context.steps.indexOf(context.step) + 1;
+    const length = context.steps.length - 1;
+    setTitle(`Paso ${index} de ${length}`);
+  }, [context.steps, context.step]);
+
+  useEffect(() => {
+    context.updateStep(router);
+  }, []);
+
+  useEffect(() => {
+    const step = context.steps.find((x) => x.url === router.pathname);
+    const index = context.steps.indexOf(step) - 1;
 
     if (index > -1 && step.url !== '/finalizar' && step.url !== '/procesando') {
-      setPreviousStep(steps[index]);
+      setPreviousStep(context.steps[index]);
     }
-  }, []);
+  }, [context.step]);
 
   useEffect(() => {
     setColorAccent(sessionStorage.getItem('color-accent'));
@@ -36,25 +58,6 @@ const Header = () => {
     setColorText(sessionStorage.getItem('color-text'));
     setVisible(true);
   }, []);
-
-  const renderStep = () => {
-    if (!context.step) {
-      return;
-    }
-
-    if (context.step.url === '/finalizar') {
-      return 'Finalizado';
-    }
-
-    if (context.step.url === '/procesando') {
-      return 'Pendiente';
-    }
-
-    const steps = solicitud.getSteps();
-    const index = steps.indexOf(context.step) + 1;
-    const length = steps.length - 1;
-    return `Paso ${index} de ${length}`;
-  };
 
   const onClickBack = () => {
     router.push(previousStep.url);
@@ -83,7 +86,7 @@ const Header = () => {
           </div>
         )}
         <div className={classes.step} style={{ color: colorAccent }}>
-          {renderStep()}
+          {title}
         </div>
         <div className={classes.title} style={{ color: colorText }}>
           {context.step?.title}

@@ -1,6 +1,7 @@
 import http from '../services/http';
 import { compressBase64Image } from '../services/images';
 import { hashSha1 } from './../services/security';
+import { entidad } from './entidad';
 
 const mockup = process.env.NEXT_PUBLIC_MOCKUP === 'true';
 const mockupDelay = () => {
@@ -11,37 +12,6 @@ const types = {
   fisica: 'fisica',
   juridica: 'juridica',
   credenciales: 'credenciales',
-};
-
-const actions = {
-  get: 'get',
-  create: 'create',
-  createJuridica: 'create-juridica',
-  updateMorfologia: 'update-morfologia',
-  updateListaNegra: 'update-lista-negra',
-  updateListaBlanca: 'update-lista-blanca',
-  updateListaNegraBind: 'update-lista-negra-bind',
-  updateRenaper: 'update-renaper',
-  updatePruebaVida: 'update-prueba-vida',
-  updateEmail: 'update-email',
-  updateEmailScoring: 'update-email-scoring',
-  sendEmailOtp: 'send-email-otp',
-  validateEmailOtp: 'validate-email-otp',
-  updateTelefono: 'update-telefono',
-  updateTelefonoScoring: 'update-telefono-scoring',
-  sendTelefonoOtp: 'send-telefono-otp',
-  validateTelefonoOtp: 'validate-telefono-otp',
-  update: 'update',
-  updatePadronA5: 'update-padron-a5',
-  updateSujetoObligado: 'update-sujeto-obligado',
-  updateNosis: 'update-nosis',
-  updateWorldsys: 'update-worldsys',
-  updateMatriz: 'update-matriz',
-  updateLegajoDigital: 'update-legajo-digital',
-  updateAltaCuenta: 'update-alta-cuenta',
-  updateCredenciales: 'update-credenciales',
-  updateDispositivo: 'update-dispositivo',
-  updateDispositivoPJ: 'update-dispositivo-pj',
 };
 
 const screens = {
@@ -58,7 +28,7 @@ const status = {
   rejected: '3',
   validation: '4',
   pendingCredentials: '5',
-  errorBind: '6'
+  errorBind: '6',
 };
 
 const get = async () => {
@@ -647,27 +617,26 @@ const updateDispositivo = async (urlPJ) => {
     await mockupDelay();
     return true;
   }
-   const responseIp = await http.getPublic('https://geolocation-db.com/json/');
+  const responseIp = await http.getPublic('https://geolocation-db.com/json/');
 
-    const id = sessionStorage.getItem('solicitud');
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes${
-      urlPJ ?? ''
-    }/${id}/dispositivo`;
-    const data = {
-      ip: responseIp?.data?.IPv4 ?? '',
-      dispositivo: window?.navigator?.userAgent??'',
-    };
-    const response = await http.patch(url, data);
-    if (!response.error) {
-      return true;
-    }
-    return false;
+  const id = sessionStorage.getItem('solicitud');
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes${
+    urlPJ ?? ''
+  }/${id}/dispositivo`;
+  const data = {
+    ip: responseIp?.data?.IPv4 ?? '',
+    dispositivo: window?.navigator?.userAgent ?? '',
+  };
+  const response = await http.patch(url, data);
+  if (!response.error) {
+    return true;
+  }
+  return false;
 };
-
 
 const runAction = async (action, form) => {
   switch (action.id) {
-    case actions.create:
+    case 'create':
       return await create(
         form.frente,
         form.dorso,
@@ -675,7 +644,7 @@ const runAction = async (action, form) => {
         form.cropDorso
       );
 
-    case actions.createJuridica:
+    case 'create-juridica':
       return await createJuridica(
         form.nombre,
         form.cuit,
@@ -684,49 +653,49 @@ const runAction = async (action, form) => {
         form.telefono
       );
 
-    case actions.updateListaNegra:
+    case 'update-lista-negra':
       return await updateListaNegra();
 
-    case actions.updateListaNegraBind:
+    case 'update-lista-negra-bind':
       return await updateListaNegraBind();
 
-    case actions.updateListaBlanca:
+    case 'update-lista-blanca':
       return await updateListaBlanca();
 
-    case actions.updateMorfologia:
+    case 'update-morfologia':
       return await updateMorfologia();
 
-    case actions.updateRenaper:
+    case 'update-renaper':
       return await updateRenaper();
 
-    case actions.updatePruebaVida:
+    case 'update-prueba-vida':
       return await updatePruebaVida(form.video);
 
-    case actions.updateEmail:
+    case 'update-email':
       return await updateEmail(form.email);
 
-    case actions.updateEmailScoring:
+    case 'update-email-scoring':
       return await updateEmailScoring();
 
-    case actions.sendEmailOtp:
+    case 'send-email-otp':
       return await sendEmailOtp();
 
-    case actions.validateEmailOtp:
+    case 'validate-email-otp':
       return await validateEmailOtp(form.otp);
 
-    case actions.updateTelefono:
+    case 'update-telefono':
       return await updateTelefono(form.telefono);
 
-    case actions.updateTelefonoScoring:
+    case 'update-telefono-scoring':
       return await updateTelefonoScoring();
 
-    case actions.sendTelefonoOtp:
+    case 'send-telefono-otp':
       return await sendTelefonoOtp();
 
-    case actions.validateTelefonoOtp:
+    case 'validate-telefono-otp':
       return await validateTelefonoOtp(form.otp);
 
-    case actions.update:
+    case 'update':
       return await update(
         form.estadoCivil,
         form.esPEP,
@@ -742,34 +711,34 @@ const runAction = async (action, form) => {
         form.comercioProvincia
       );
 
-    case actions.updatePadronA5:
+    case 'update-padron-a5':
       return await updatePadronA5();
 
-    case actions.updateSujetoObligado:
+    case 'update-sujeto-obligado':
       return await updateSujetoObligado();
 
-    case actions.updateNosis:
+    case 'update-nosis':
       return await updateNosis();
 
-    case actions.updateWorldsys:
+    case 'update-worldsys':
       return await updateWorldsys();
 
-    case actions.updateMatriz:
+    case 'update-matriz':
       return await updateMatriz();
 
-    case actions.updateLegajoDigital:
+    case 'update-legajo-digital':
       return await updateLegajoDigital();
 
-    case actions.updateAltaCuenta:
+    case 'update-alta-cuenta':
       return await updateAltaCuenta();
 
-    case actions.updateCredenciales:
+    case 'update-credenciales':
       return await updateCredenciales(form.usuario, form.password);
 
-    case actions.updateDispositivo:
+    case 'update-dispositivo':
       return await updateDispositivo();
 
-    case actions.updateDispositivoPJ:
+    case 'update-dispositivo-pj':
       return await updateDispositivo('pj');
 
     default:
@@ -777,205 +746,24 @@ const runAction = async (action, form) => {
   }
 };
 
-const stepsFisica = [
-  {
-    url: '/documento',
-    title: 'Documento',
-    actions: [
-      {
-        id: actions.create,
-        title: '',
-        completed: false,
-      },
-      {
-        id: actions.updateMorfologia,
-        title: '',
-        completed: false,
-      },
-      {
-        id: actions.updateRenaper,
-        title: '',
-        completed: false,
-      },
-      {
-        id: actions.updateListaNegra,
-        title: '',
-        completed: false,
-      },
-      {
-        id: actions.updateListaBlanca,
-        title: '',
-        completed: false,
-      },
-      {
-        id: actions.updateListaNegraBind,
-        title: '',
-        completed: false,
-      },
-      {
-        id: actions.updateNosis,
-        title: '',
-        completed: false,
-      },
-      {
-        id: actions.updateDispositivo,
-        title: '',
-        completed: false,
-      },
-    ],
-  },
-  {
-    url: '/prueba-vida',
-    title: 'Prueba de Vida',
-    actions: [
-      {
-        id: actions.updatePruebaVida,
-        title: 'Comprobando prueba de vida',
-        completed: false,
-      },
-    ],
-  },
-  {
-    url: '/email',
-    title: 'Ingresá tu email',
-    actions: [
-      {
-        id: actions.updateEmailScoring,
-        title: '',
-        completed: false,
-      },
-    ],
-  },
-  {
-    url: '/telefono',
-    title: 'Ingresá tu teléfono',
-    actions: [
-      {
-        id: actions.updateTelefonoScoring,
-        title: '',
-        completed: false,
-      },
-    ],
-  },
-  {
-    url: '/formulario',
-    title: 'Algunos datos más',
-    actions: [
-      {
-        id: actions.update,
-        title: '',
-        completed: false,
-      },
-      {
-        id: actions.updatePadronA5,
-        title: '',
-        completed: false,
-      },
-      {
-        id: actions.updateSujetoObligado,
-        title: '',
-        completed: false,
-      },
-
-      {
-        id: actions.updateWorldsys,
-        title: '',
-        completed: false,
-      },
-      {
-        id: actions.updateMatriz,
-        title: '',
-        completed: false,
-      },
-      {
-        id: actions.updateLegajoDigital,
-        title: '',
-        completed: false,
-      },
-      {
-        id: actions.updateAltaCuenta,
-        title: '',
-        completed: false,
-      },
-    ],
-  },
-  {
-    url: '/credenciales',
-    title: 'Credenciales Banco',
-    actions: [
-      {
-        id: actions.updateCredenciales,
-        title: 'Actualizando credenciales',
-        completed: false,
-      },
-    ],
-  },
-  { url: '/finalizar', title: '¡Felicitaciones!' },
-];
-
-const stepsJuridica = [
-  {
-    url: '/juridica',
-    title: 'Completá el Formulario',
-    actions: [
-      {
-        id: actions.createJuridica,
-        title: 'Creando solicitud',
-        completed: false,
-      },
-      {
-        id: actions.updateDispositivoPJ,
-        title: '',
-        completed: false,
-      },
-    ],
-  },
-  { url: '/procesando', title: 'Procesando Solicitud' },
-];
-
-const stepsCredenciales = [
-  {
-    url: '/telefono',
-    title: 'Ingresá tu teléfono',
-    actions: [],
-  },
-  {
-    url: '/credenciales',
-    title: 'Credenciales',
-    actions: [
-      {
-        id: actions.updateAltaCuenta,
-        title: 'Creando cuenta',
-        completed: false,
-      },
-      {
-        id: actions.updateCredenciales,
-        title: 'Actualizando credenciales',
-        completed: false,
-      },
-    ],
-  },
-  { url: '/finalizar', title: '¡Felicitaciones!' },
-];
-
-const getSteps = () => {
+const getSteps = async () => {
+  const client = await entidad.get();
   const type = sessionStorage.getItem('type');
 
   switch (type) {
     case types.juridica:
-      return stepsJuridica;
+      return JSON.parse(client.jsonPersonaJuridica);
 
     case types.credenciales:
-      return stepsCredenciales;
+      return JSON.parse(client.jsonCredenciales);
 
     default:
-      return stepsFisica;
+      return JSON.parse(client.jsonPersonaFisica);
   }
 };
 
 export const solicitud = {
   types: types,
-  actions: actions,
   screens: screens,
   status: status,
   getSteps: getSteps,

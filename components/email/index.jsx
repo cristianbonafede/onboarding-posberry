@@ -27,7 +27,7 @@ const Email = () => {
     }
     setVisible(true);
     context.updateStep(router);
-  }, []);
+  }, [context.steps]);
 
   const onFinish = () => {
     context.nextStep(router);
@@ -44,8 +44,9 @@ const Email = () => {
         image="/images/email.png"
         nextScreen={solicitud.screens.form}
       >
-      Ahora necesitamos que ingreses tu 
-        <Highlight primary>correo electrónico</Highlight> que usaremos de contacto. Te enviaremos un
+        Ahora necesitamos que ingreses tu
+        <Highlight primary>correo electrónico</Highlight> que usaremos de
+        contacto. Te enviaremos un
         <Highlight primary>código numérico</Highlight>para validar que sea
         correcto.
       </Instructions>

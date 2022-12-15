@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
-import { solicitud } from './../../models/solicitud';
+import SolicitudContext from '../../store/solicitud-context';
 
 import Button from './button';
 import Highlight from './highlight';
@@ -15,6 +15,8 @@ const Layout = (props) => {
   const router = useRouter();
   const isHome = router.pathname == '/';
 
+  const context = useContext(SolicitudContext);
+
   const [visible, setVisible] = useState(false);
   const [logo, setLogo] = useState();
   const [type, setType] = useState();
@@ -25,9 +27,18 @@ const Layout = (props) => {
     setVisible(true);
   }, []);
 
+  useEffect(() => {
+    const setSteps = async () => {
+      if (context.steps.length === 0) {
+        await context.updateSteps();
+      }
+    };
+
+    setSteps();
+  }, [context.steps]);
+
   const onClickRegister = () => {
-    const steps = solicitud.getSteps();
-    const url = steps[0].url;
+    const url = context.steps[0].url;
     router.push(url);
   };
 

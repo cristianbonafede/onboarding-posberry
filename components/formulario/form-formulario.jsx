@@ -69,7 +69,7 @@ const FormFormulario = () => {
 
   const renderTerminos = () => {
     return (
-      <div>
+      <div onClick={onClickTerminos}>
         Acepto los
         <Highlight primary>
           <a
@@ -86,7 +86,7 @@ const FormFormulario = () => {
 
   const renderTerminosBanco = () => {
     return (
-      <div>
+      <div onClick={onClickTerminosBanco}>
         Acepto los
         <Highlight primary>
           <a
@@ -167,18 +167,8 @@ const FormFormulario = () => {
         name="esUif"
         description="Son personas que deben brindar datos a la UIF para prevenir el lavado de dinero y financiación del terrorismo"
       />
-      <Checkbox
-        label={renderTerminos()}
-        name="aceptaTyc"
-        required
-        onChange={onClickTerminos}
-      />
-      <Checkbox
-        label={renderTerminosBanco()}
-        name="aceptaTycBanco"
-        required
-        onChange={onClickTerminosBanco}
-      />
+      <Checkbox label={renderTerminos()} name="aceptaTyc" required />
+      <Checkbox label={renderTerminosBanco()} name="aceptaTycBanco" required />
 
       <Divider />
 

@@ -25,6 +25,12 @@ const FormOtp = () => {
         <Button
           block
           type="secondary"
+          text="Cambiar el email"
+          onClick={onClickBack}
+        />
+        <Button
+          block
+          type="secondary"
           text="Reenviar"
           disabled={!resend}
           onClick={onClickSend}
@@ -56,6 +62,10 @@ const FormOtp = () => {
     await solicitud.sendEmailOtp();
     setLoading(false);
     setResend(false);
+  };
+
+  const onClickBack = async () => {
+    return context.changeScreen(solicitud.screens.form);
   };
 
   const onSubmit = async (values) => {
