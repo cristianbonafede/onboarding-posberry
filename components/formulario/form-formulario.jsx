@@ -156,7 +156,7 @@ const FormFormulario = () => {
       <Checkbox
         label="¿Sos ciudadano o residente fiscal estadounidense (FATCA)?"
         name="esFacta"
-        description="Ley emitida por Estados Unidos diseñada para detectar contribuyentes estadounidenses que no estén reportando sus ingresos en cuentas fuera del país"
+        description="Ley emitida por Estados Unidos diseñada para detectar contribuyentes estadounidenses que no estén reportando sus ingresos en cuentas fuera del país."
       />
       <Checkbox
         label="¿Sos ciudadano o residente fiscal de otro país (OCDE)?"

@@ -2,15 +2,13 @@
   height: inherit;
   width: inherit;
   position: relative;
-  height: 100%;
+  height: calc(100% - 40px);
   overflow-y: auto;
   overflow-x: hidden;
-  // display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 
   .content {
     width: 100%;
+    min-height: calc(100% - 100px);
     padding: 30px 100px;
   }
 

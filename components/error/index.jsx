@@ -27,8 +27,10 @@ const Error = () => {
   const router = useRouter();
 
   const [ready, setReady] = useState(false);
+  const [logo, setLogo] = useState();
 
   useEffect(() => {
+    setLogo(sessionStorage.getItem('logo'));
     setReady(true);
   }, []);
 
@@ -79,7 +81,7 @@ const Error = () => {
         return <CredencialesNoValidas />;
 
       case 'CREDENCIALES_INCOMPLETAS':
-          return <CredencialesIncompletas />;
+        return <CredencialesIncompletas />;
 
       default:
         return <Generico />;
@@ -90,12 +92,7 @@ const Error = () => {
     <div className={classes.error}>
       <div className={classes.image}>
         <div className={classes.logo}>
-          <Image
-            src="/images/logo-white.png"
-            alt="Logo"
-            layout="fill"
-            objectFit="contain"
-          />
+          {logo && <Image src={logo} alt="Logo" layout="fill" objectFit="contain" />}
         </div>
         <Svg />
       </div>
