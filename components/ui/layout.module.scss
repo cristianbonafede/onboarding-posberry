@@ -1,6 +1,6 @@
 .layout {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-image: url('/images/background.jpg');
   background-position: right;
   background-repeat: no-repeat;
@@ -23,7 +23,7 @@
     padding: 40px 60px;
 
     .jumbotron {
-      height: calc(100vh - 80px);
+      height: calc(100% - 80px);
       width: inherit;
       display: flex;
       flex-direction: column;
@@ -31,8 +31,8 @@
       width: 55%;
 
       .logo {
-        width: 150px;
-        height: 50px;
+        width: 250px;
+        height: 100px;
         position: relative;
         margin-bottom: 20px;
       }
@@ -59,7 +59,7 @@
 
     .main {
       width: 45%;
-      height: calc(100vh - 80px);
+      height: 100%;
 
       &.home {
         width: 0%;
@@ -131,8 +131,8 @@
         justify-content: space-between;
 
         .logo {
-          width: 120px;
-          height: 40px;
+          width: 180px;
+          height: 60px;
         }
 
         .title {
@@ -145,12 +145,12 @@
 
         &.home {
           width: 100%;
-          padding: 10px 15px 40px 15px;
+          padding: 10px 15px 0px 15px;
         }
       }
 
       .main {
-        height: 100vh;
+        height: 100%;
         width: 100%;
 
         &.home {

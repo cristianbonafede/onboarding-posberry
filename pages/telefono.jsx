@@ -1,14 +1,13 @@
 import Head from 'next/head';
+import { Fragment } from 'react';
 
 import Telefono from './../components/telefono';
 import Card from './../components/ui/card';
 import Layout from './../components/ui/layout';
 
-import { SolicitudContextProvider } from './../store/solicitud-context';
-
 const TelefonoPage = () => {
   return (
-    <SolicitudContextProvider>
+    <Fragment>
       <Head>
         <title>Telefono - BIND Pagos</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -18,7 +17,7 @@ const TelefonoPage = () => {
           <Telefono />
         </Card>
       </Layout>
-    </SolicitudContextProvider>
+    </Fragment>
   );
 };
 

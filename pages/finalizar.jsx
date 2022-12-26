@@ -1,14 +1,13 @@
 import Head from 'next/head';
+import { Fragment } from 'react';
 
 import Finalizar from './../components/finalizar';
 import Card from './../components/ui/card';
 import Layout from './../components/ui/layout';
 
-import { SolicitudContextProvider } from './../store/solicitud-context';
-
 const FinalizarPage = () => {
   return (
-    <SolicitudContextProvider>
+    <Fragment>
       <Head>
         <title>Finalizar - BIND Pagos</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -18,7 +17,7 @@ const FinalizarPage = () => {
           <Finalizar />
         </Card>
       </Layout>
-    </SolicitudContextProvider>
+    </Fragment>
   );
 };
 

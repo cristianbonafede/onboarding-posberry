@@ -1,14 +1,13 @@
 import Head from 'next/head';
+import { Fragment } from 'react';
 
 import PruebaVida from './../components/prueba-vida';
 import Card from './../components/ui/card';
 import Layout from './../components/ui/layout';
 
-import { SolicitudContextProvider } from './../store/solicitud-context';
-
 const PruebaVidaPage = () => {
   return (
-    <SolicitudContextProvider>
+    <Fragment>
       <Head>
         <title>Prueba de Vida - BIND Pagos</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -18,7 +17,7 @@ const PruebaVidaPage = () => {
           <PruebaVida />
         </Card>
       </Layout>
-    </SolicitudContextProvider>
+    </Fragment>
   );
 };
 

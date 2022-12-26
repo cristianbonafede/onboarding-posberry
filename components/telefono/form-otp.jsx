@@ -25,14 +25,14 @@ const FormOtp = () => {
   const renderButtons = () => {
     return (
       <React.Fragment>
-   {!readonly && (
-        <Button
-          block
-          type="secondary"
-          text="Cambiar el teléfono"
-          onClick={onClickBack}
-        />
-   )}
+        {!readonly && (
+          <Button
+            block
+            type="secondary"
+            text="Cambiar el teléfono"
+            onClick={onClickBack}
+          />
+        )}
 
         <Button
           block
@@ -47,14 +47,18 @@ const FormOtp = () => {
   };
 
   useEffect(() => {
-    if (valid) {
-      if (context.step.actions.length === 0) {
-        context.nextStep(router);
-        return;
-      }
+    async function checkValid() {
+      if (valid) {
+        if (context.step.actions.length === 0) {
+          await context.nextStep(router);
+          return;
+        }
 
-      context.changeScreen(solicitud.screens.checklist);
+        context.changeScreen(solicitud.screens.checklist);
+      }
     }
+
+    checkValid();
   }, [valid]);
 
   useEffect(() => {
@@ -76,7 +80,7 @@ const FormOtp = () => {
   };
 
   const onClickBack = async () => {
-    if(readonly){
+    if (readonly) {
       return;
     }
     return context.changeScreen(solicitud.screens.form);
@@ -100,7 +104,7 @@ const FormOtp = () => {
   }
 
   return (
-    <Form renderButtons={renderButtons} onSubmit={onSubmit}>
+    <Form centered renderButtons={renderButtons} onSubmit={onSubmit}>
       <div className={classes.description}>
         Te enviamos un
         <Highlight primary>código de verificación</Highlight>en un mensaje de

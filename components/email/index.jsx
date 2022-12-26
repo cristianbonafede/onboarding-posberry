@@ -20,17 +20,22 @@ const Email = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const redirect = context.validateStep(router);
-    if (redirect) {
-      router.push(redirect);
-      return;
-    }
-    setVisible(true);
-    context.updateStep(router);
+    const validateStep = async () => {
+      const redirect = await context.validateStep(router);
+      if (redirect) {
+        router.push(redirect);
+        return;
+      }
+
+      setVisible(true);
+      context.updateStep(router);
+    };
+
+    validateStep();
   }, [context.steps]);
 
-  const onFinish = () => {
-    context.nextStep(router);
+  const onFinish = async () => {
+    await context.nextStep(router);
   };
 
   if (!visible) {

@@ -15,7 +15,7 @@
   }
 
   .list {
-    height: calc(100vh - 470px);
+    height: calc(100% - 470px);
     border-radius: 0 0 40px 40px;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -80,7 +80,7 @@
     }
 
     .list {
-      height: calc(100vh - 390px);
+      height: calc(100% - 390px);
       border-radius: 0 !important;
 
       .item {

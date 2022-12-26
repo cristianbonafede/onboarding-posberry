@@ -56,6 +56,8 @@ const FormTelefono = () => {
         required
         autofocus
         readonly={readonly}
+        type="number"
+        inputMode="tel"
       />
     </Form>
   );

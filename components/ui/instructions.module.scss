@@ -1,18 +1,15 @@
 .instructions {
-  height: inherit;
-  width: inherit;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
 
   .content {
-    height: inherit;
-    width: inherit;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    flex-grow: 1;
 
     .image {
       width: 250px;
@@ -31,8 +28,8 @@
   }
 
   .actions {
-    width: calc(100% - 80px);
-    margin: 30px 20px;
+    width: 100%;
+    padding: 30px;
   }
 }
 
@@ -49,11 +46,6 @@
         margin-bottom: 0px;
         max-width: 80%;
       }
-    }
-
-    .actions {
-      width: calc(100% - 40px);
-      margin: 20px 20px 80px 20px;
     }
   }
 }

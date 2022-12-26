@@ -1,7 +1,6 @@
 import http from '../services/http';
 import { compressBase64Image } from '../services/images';
 import { hashSha1 } from './../services/security';
-import { entidad } from './entidad';
 
 const mockup = process.env.NEXT_PUBLIC_MOCKUP === 'true';
 const mockupDelay = () => {
@@ -746,8 +745,7 @@ const runAction = async (action, form) => {
   }
 };
 
-const getSteps = async () => {
-  const client = await entidad.get();
+const getSteps = async (client) => {
   const type = sessionStorage.getItem('type');
 
   switch (type) {
@@ -755,6 +753,7 @@ const getSteps = async () => {
       return JSON.parse(client.jsonPersonaJuridica);
 
     case types.credenciales:
+      sessionStorage.setItem('otpReadonly', true);
       return JSON.parse(client.jsonCredenciales);
 
     default:

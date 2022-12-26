@@ -19,29 +19,34 @@ const Formulario = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const redirect = context.validateStep(router);
-    if (redirect) {
-      router.push(redirect);
-      return;
-    }
-    setVisible(true);
-    context.updateStep(router);
+    const validateStep = async () => {
+      const redirect = await context.validateStep(router);
+      if (redirect) {
+        router.push(redirect);
+        return;
+      }
+
+      setVisible(true);
+      context.updateStep(router);
+    };
+
+    validateStep();
   }, [context.steps]);
 
-  const onFinish = () => {
+  const onFinish = async () => {
     const status = sessionStorage.getItem('status');
 
     if (status === solicitud.status.validation) {
-      context.nextStep(router, '/procesando');
+      await context.nextStep(router, '/procesando');
       return;
     }
 
     if (status === solicitud.status.rejected) {
-      context.nextStep(router, '/error?code=RECHAZO_MATRIZ_DE_RIESGO');
+      await context.nextStep(router, '/error?code=RECHAZO_MATRIZ_DE_RIESGO');
       return;
     }
 
-    context.nextStep(router);
+    await context.nextStep(router);
   };
 
   if (!visible) {

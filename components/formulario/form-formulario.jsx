@@ -42,13 +42,11 @@ const FormFormulario = () => {
 
       response = await entidad.getTerminos();
       if (response) {
-        console.log(response);
         setTerminos(response);
       }
 
       response = await entidad.getTerminosBanco();
       if (response) {
-        console.log(response);
         setTerminosBanco(response);
       }
 
@@ -149,14 +147,12 @@ const FormFormulario = () => {
       <Checkbox
         label="¿Sos una persona politicamente expuesta (PEP)?"
         name="esPEP"
-        description="Son personas que tienen o tuvieron una función pública.
-
-"
+        description="Son personas que tienen o tuvieron una función pública."
       />
       <Checkbox
         label="¿Sos ciudadano o residente fiscal estadounidense (FATCA)?"
         name="esFacta"
-        description="Ley emitida por Estados Unidos diseñada para detectar contribuyentes estadounidenses que no estén reportando sus ingresos en cuentas fuera del país."
+        description="Ley emitida por Estados Unidos diseñada para detectar contribuyentes estadounidenses que no estén reportando sus ingresos en cuentas fuera del país"
       />
       <Checkbox
         label="¿Sos ciudadano o residente fiscal de otro país (OCDE)?"

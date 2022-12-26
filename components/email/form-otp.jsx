@@ -86,7 +86,7 @@ const FormOtp = () => {
   }
 
   return (
-    <Form renderButtons={renderButtons} onSubmit={onSubmit}>
+    <Form centered renderButtons={renderButtons} onSubmit={onSubmit}>
       <div className={classes.description}>
         Te enviamos un
         <Highlight primary>código de verificación</Highlight> a tu email.

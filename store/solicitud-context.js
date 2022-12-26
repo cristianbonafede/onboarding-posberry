@@ -1,51 +1,92 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
+import { entidad } from '../models/entidad';
 import { solicitud } from '../models/solicitud';
 
+import { hashSha256 } from '../services/security';
+import { theme } from '../services/theme';
+
+// import { hashSha256 } from '../services/security';
+
 const SolicitudContext = createContext({
+  entidadId: -1,
+  cliente: {},
   steps: [],
   step: {},
   screen: '',
   form: {},
   formProperty: '',
-  updateSteps: async () => {},
+  initialize: () => {},
   changeScreen: (value) => {},
   updateStep: (router) => {},
-  validateStep: (router) => {},
-  nextStep: (router, step) => {},
+  validateStep: async (router) => {},
+  nextStep: async (router, step) => {},
   updateForm: (values) => {},
   updateFormProperty: (value) => {},
 });
 
 export function SolicitudContextProvider(props) {
   // State
+  const [loaded, setLoaded] = useState();
+  const [cliente, setCliente] = useState();
   const [steps, setSteps] = useState([]);
   const [step, setStep] = useState();
   const [screen, setScreen] = useState(solicitud.screens.instructions);
   const [form, setForm] = useState({});
   const [formProperty, setFormProperty] = useState();
 
+  useEffect(() => {
+    const entidadId = sessionStorage.getItem('entidad');
+    if (entidadId) {
+      setLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const getCliente = async () => {
+      if (!loaded || cliente) {
+        return;
+      }
+
+      const nCliente = await entidad.get();
+
+      setCliente(nCliente);
+      theme.set(nCliente);
+
+      const steps = await solicitud.getSteps(nCliente);
+      for (let i = 0; i < steps.length; i++) {
+        const raw = process.env.NEXT_PUBLIC_HASH_KEY + steps[i].url;
+        steps[i].hash = await hashSha256(raw);
+      }
+
+      setSteps(steps);
+    };
+
+    getCliente();
+  }, [loaded]);
+
   // Methods
-  const updateSteps = async () => {
-    const values = await solicitud.getSteps();
-    setSteps(values);
+  const initialize = () => {
+    setLoaded(true);
   };
 
   const changeScreen = (value) => {
     setScreen(value);
   };
 
-  const validateStep = (router) => {
+  const validateStep = async (router) => {
     if (steps.length === 0) {
       return false;
     }
 
-    const allowedUrl = sessionStorage.getItem('step');
     const currentUrl = router.pathname;
+    const raw = process.env.NEXT_PUBLIC_HASH_KEY + currentUrl;
+    const currentHash = await hashSha256(raw);
+    const allowedHash = sessionStorage.getItem('step');
 
-    let allowedIndex = steps.findIndex((x) => x.url === allowedUrl);
+    let allowedIndex = steps.findIndex((x) => x.hash === allowedHash);
     allowedIndex = allowedIndex == -1 ? 0 : allowedIndex;
-    const currentIndex = steps.findIndex((x) => x.url === currentUrl);
+    const currentIndex = steps.findIndex((x) => x.hash === currentHash);
 
     const allowed = currentIndex > -1 && currentIndex <= allowedIndex;
 
@@ -68,7 +109,7 @@ export function SolicitudContextProvider(props) {
     setStep(nStep);
   };
 
-  const nextStep = (router, url) => {
+  const nextStep = async (router, url) => {
     if (url) {
       sessionStorage.setItem('step', url);
       router.push(url);
@@ -77,8 +118,10 @@ export function SolicitudContextProvider(props) {
 
     const index = steps.indexOf(step);
     const nStep = steps[index + 1];
+    sessionStorage.setItem('step', nStep.hash);
 
-    sessionStorage.setItem('step', nStep.url);
+    setScreen(solicitud.screens.instructions);
+
     router.push(nStep.url);
   };
 
@@ -91,12 +134,13 @@ export function SolicitudContextProvider(props) {
   };
 
   const context = {
+    cliente: cliente,
     steps: steps,
     step: step,
     screen: screen,
     form: form,
     formProperty: formProperty,
-    updateSteps: updateSteps,
+    initialize: initialize,
     changeScreen: changeScreen,
     updateStep: updateStep,
     validateStep: validateStep,

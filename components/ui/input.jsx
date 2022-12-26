@@ -5,9 +5,10 @@ const Input = (props) => {
   const {
     label,
     name,
+    type,
+    inputMode,
     placeholder,
     autofocus,
-    password,
     required,
     readonly,
     centered,
@@ -52,14 +53,14 @@ const Input = (props) => {
     return rules;
   };
 
-  if (password) {
-    return (
-      <Form.Item
-        label={label}
-        name={name}
-        rules={setRules()}
-        className={`${centered ? 'centered' : ''}`}
-      >
+  return (
+    <Form.Item
+      label={label}
+      name={name}
+      rules={setRules()}
+      className={`${centered ? 'centered' : ''}`}
+    >
+      {type == 'password' ? (
         <Inputd.Password
           placeholder={placeholder}
           autoFocus={autofocus}
@@ -70,27 +71,20 @@ const Input = (props) => {
           onBlur={() => setFocused(false)}
           style={renderStyle()}
         />
-      </Form.Item>
-    );
-  }
-
-  return (
-    <Form.Item
-      label={label}
-      name={name}
-      rules={setRules()}
-      className={`${centered ? 'centered' : ''}`}
-    >
-      <Inputd
-        placeholder={placeholder}
-        autoFocus={autofocus}
-        readOnly={readonly}
-        className={`${hidden && 'hidden'}`}
-        onChange={onChange}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        style={renderStyle()}
-      />
+      ) : (
+        <Inputd
+          type={type ?? 'text'}
+          inputMode={inputMode ?? 'text'}
+          placeholder={placeholder}
+          autoFocus={autofocus}
+          readOnly={readonly}
+          className={`${hidden && 'hidden'}`}
+          onChange={onChange}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          style={renderStyle()}
+        />
+      )}
     </Form.Item>
   );
 };

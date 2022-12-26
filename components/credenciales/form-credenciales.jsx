@@ -163,14 +163,14 @@ const FormCredenciales = () => {
       <Input
         label="Contraseña"
         name="password"
-        password
+        type="password"
         required
         onChange={onChangePassword}
       />
       <Input
         label="Confirmar contraseña"
         name="passwordConfirm"
-        password
+        type="password"
         required
         validators={[compare()]}
       />
@@ -204,7 +204,7 @@ const FormCredenciales = () => {
 
       <div className={classes.footer}>
         Recordá tu <Highlight primary> contraseña</Highlight>
-        y no la compartas con nadie. Las necesitarás para ingresar 
+        y no la compartas con nadie. Las necesitarás para ingresar
         en el <Highlight primary>Homebanking Bind24</Highlight> y administrar tu cuenta.
       </div>
     </Form>

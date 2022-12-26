@@ -1,14 +1,13 @@
 import Head from 'next/head';
+import { Fragment } from 'react';
 
 import Card from '../components/ui/card';
 import Layout from '../components/ui/layout';
 import Juridica from './../components/juridica/index';
 
-import { SolicitudContextProvider } from './../store/solicitud-context';
-
 const JuridicaPage = () => {
   return (
-    <SolicitudContextProvider>
+    <Fragment>
       <Head>
         <title>Persona Jurídica - BIND Pagos</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -18,7 +17,7 @@ const JuridicaPage = () => {
           <Juridica />
         </Card>
       </Layout>
-    </SolicitudContextProvider>
+    </Fragment>
   );
 };
 

@@ -1,23 +1,25 @@
 .form {
-  height: inherit;
-  width: inherit;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   position: relative;
-  height: calc(100% - 40px);
   overflow-y: auto;
   overflow-x: hidden;
 
   .content {
+    flex-grow: 1;
+    padding: 30px;
     width: 100%;
-    min-height: calc(100% - 100px);
-    padding: 30px 100px;
+    max-width: 550px;
+    margin: 0 auto;
   }
 
   .actions {
-    margin: 0px 40px 30px 40px;
-
-    > * {
-      margin-top: 15px;
-    }
+    width: 100%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
 
   &.centered {
@@ -26,26 +28,9 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 0 100px;
     }
   }
 }
 
 @media only screen and (max-width: 768px) {
-  .form {
-    .content {
-      padding: 50px 35px 20px 35px;
-      min-height: calc(100vh - 265px);
-    }
-
-    .actions {
-      margin: 0px 20px 70px 20px;
-    }
-
-    &.centered {
-      .content {
-        padding: 50px 35px 20px 35px;
-      }
-    }
-  }
 }

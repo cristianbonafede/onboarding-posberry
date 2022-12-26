@@ -51,7 +51,13 @@ const FormJuridica = () => {
         required
       />
       <Input label="Correo Electrónico" name="email" required />
-      <Input label="Teléfono" name="telefono" required />
+      <Input
+        label="Teléfono"
+        name="telefono"
+        required
+        type="number"
+        inputMode="tel"
+      />
     </Form>
   );
 };

@@ -1,5 +1,5 @@
 .error {
-  height: 100vh;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.7847514006);
   display: flex;
   flex-direction: row;
@@ -74,7 +74,7 @@
 
 @media only screen and (max-width: 1200px) {
   .error {
-    height: 100vh;
+    height: 100%;
     flex-direction: column;
 
     .container {

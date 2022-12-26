@@ -22,19 +22,13 @@ const Layout = (props) => {
   const [type, setType] = useState();
 
   useEffect(() => {
+    if (context.steps.length === 0) {
+      return;
+    }
+
     setLogo(sessionStorage.getItem('logo'));
     setType(sessionStorage.getItem('type'));
     setVisible(true);
-  }, []);
-
-  useEffect(() => {
-    const setSteps = async () => {
-      if (context.steps.length === 0) {
-        await context.updateSteps();
-      }
-    };
-
-    setSteps();
   }, [context.steps]);
 
   const onClickRegister = () => {
@@ -47,17 +41,23 @@ const Layout = (props) => {
   }
 
   const renderText = () => {
+    // Texto Credenciales
     if (type == 'credenciales') {
       return (
         <div>
           <div className={classes.title}>¡Hola de nuevo!</div>
           <div className={classes.description}>
-            Para completar el proceso sólo falta completar
-            <Highlight primary>un paso más.</Highlight>
+            <Highlight primary>
+              {' '}
+              Para terminar el proceso sólo falta completar un paso más.&nbsp;
+            </Highlight>
+            Haz click en continuar.
           </div>
         </div>
       );
-    } else {
+    }
+    // Texto Persona Fisica
+    if (type == 'fisica') {
       return (
         <div>
           <div className={classes.title}>
@@ -68,8 +68,22 @@ const Layout = (props) => {
             Tomará unos pocos minutos. Te recomendamos
             <Highlight primary>tener a mano tu DNI</Highlight> y ubicarte en un
             lugar con buena luz.
-            <br/>
+            <br />
             Recordá que es necesario tener una actividad en AFIP.
+          </div>
+        </div>
+      );
+    } else {
+      // Texto Persona Juridica
+      return (
+        <div>
+          <div className={classes.title}>
+            ¡Bienvenido! Para comenzar a cobrar con QR necesitas tener una
+            <Highlight primary>cuenta en el banco BIND.</Highlight>
+          </div>
+          <div className={classes.description}>
+            Te contactaremos con un representante del banco para completar el
+            proceso rápidamente.
           </div>
         </div>
       );
