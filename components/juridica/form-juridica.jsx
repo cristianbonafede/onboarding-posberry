@@ -46,7 +46,7 @@ const FormJuridica = () => {
         label="Rubro"
         name="rubro"
         options={rubros}
-        value="id"
+        value="codigo"
         text="nombre"
         required
       />
