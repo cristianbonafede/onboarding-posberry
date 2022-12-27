@@ -90,6 +90,10 @@ export function SolicitudContextProvider(props) {
 
     const allowed = currentIndex > -1 && currentIndex <= allowedIndex;
 
+    if (allowed) {
+      setScreen(solicitud.screens.instructions);
+    }
+
     return allowed ? undefined : steps[allowedIndex].url;
   };
 
@@ -120,7 +124,7 @@ export function SolicitudContextProvider(props) {
     const nStep = steps[index + 1];
     sessionStorage.setItem('step', nStep.hash);
 
-    setScreen(solicitud.screens.instructions);
+    setScreen(solicitud.screens.empty);
 
     router.push(nStep.url);
   };

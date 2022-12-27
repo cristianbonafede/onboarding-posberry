@@ -19,6 +19,7 @@ const screens = {
   checklist: 'checklist',
   camera: 'camera',
   otp: 'otp',
+  empty: 'empty',
 };
 
 const status = {

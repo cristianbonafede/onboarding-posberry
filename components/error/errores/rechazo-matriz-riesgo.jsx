@@ -26,8 +26,8 @@ const RechazoMatrizRiesgo = () => {
         </div>
         <div>
           Por favor, comunicate con{' '}
-          <a href="mailto:info@bindpagos.com.ar" style={{ color: '#ff9340' }}>
-            info@bindpagos.com.ar
+          <a href="mailto:altas@bindpagos.com.ar" style={{ color: '#ff9340' }}>
+            altas@bindpagos.com.ar
           </a>
         </div>
       </div>

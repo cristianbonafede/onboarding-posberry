@@ -56,8 +56,23 @@ const Layout = (props) => {
         </div>
       );
     }
-    // Texto Persona Fisica
-    if (type == 'fisica') {
+    // Texto Persona Juridica
+    if (type == 'juridica') {
+
+      return (
+        <div>
+          <div className={classes.title}>
+            ¡Bienvenido! Para comenzar a cobrar con QR necesitas tener una
+            <Highlight primary>cuenta en el banco BIND.</Highlight>
+          </div>
+          <div className={classes.description}>
+            Te contactaremos con un representante del banco para completar el
+            proceso rápidamente.
+          </div>
+        </div>
+      );
+    } else {
+      // Texto Persona fisica
       return (
         <div>
           <div className={classes.title}>
@@ -70,20 +85,6 @@ const Layout = (props) => {
             lugar con buena luz.
             <br />
             Recordá que es necesario tener una actividad en AFIP.
-          </div>
-        </div>
-      );
-    } else {
-      // Texto Persona Juridica
-      return (
-        <div>
-          <div className={classes.title}>
-            ¡Bienvenido! Para comenzar a cobrar con QR necesitas tener una
-            <Highlight primary>cuenta en el banco BIND.</Highlight>
-          </div>
-          <div className={classes.description}>
-            Te contactaremos con un representante del banco para completar el
-            proceso rápidamente.
           </div>
         </div>
       );

@@ -67,7 +67,7 @@ const Documento = () => {
             y tus ventas se 
             acreditarán en línea en tu cuenta de Banco Industrial.
             Te enviamos por mail info para operar. Si tenés consultas
-            comunicate a <Highlight primary>info@bindpagos.com.ar</Highlight>
+            comunicate a <Highlight primary>altas@bindpagos.com.ar</Highlight>
           </div>
         </div>
       </div>

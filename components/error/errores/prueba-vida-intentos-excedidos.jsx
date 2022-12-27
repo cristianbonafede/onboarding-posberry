@@ -27,8 +27,8 @@ const PruebaVidaIntentosExcedidos = () => {
         <div>
           Por favor, volvé a intentarlo en 24hs. Si el problema persiste
           comunicate con{' '}
-          <a href="mailto:info@bindpagos.com.ar" style={{ color: '#ff9340' }}>
-            info@bindpagos.com.ar
+          <a href="mailto:altas@bindpagos.com.ar" style={{ color: '#ff9340' }}>
+            altas@bindpagos.com.ar
           </a>
         </div>
       </div>
