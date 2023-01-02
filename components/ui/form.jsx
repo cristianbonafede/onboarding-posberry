@@ -7,7 +7,7 @@ import { FormContextProvider } from '../../store/form-context';
 import classes from './form.module.scss';
 
 const Form = (props) => {
-  const { children, centered, values, renderButtons, onSubmit } = props;
+  const { children, centered, values, renderButtons, onSubmit, customclass } = props;
 
   const [form] = Formd.useForm();
   const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ const Form = (props) => {
     <FormContextProvider form={form}>
       <Formd
         form={form}
-        className={`${classes.form} ${centered && classes.centered}`}
+        className={`${classes.form} ${centered && classes.centered} ${customclass}`}
         layout="vertical"
         onFinish={onFinish}
       >

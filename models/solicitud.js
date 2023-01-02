@@ -423,7 +423,9 @@ const update = async (
   comercioCalle,
   comercioNumeracion,
   comercioLocalidad,
-  comercioProvincia
+  comercioProvincia,
+  comercioCodigoPostal,
+  comercioMunicipalidad
 ) => {
   if (mockup) {
     await mockupDelay();
@@ -445,6 +447,8 @@ const update = async (
     comercioNumeracion: comercioNumeracion,
     comercioLocalidad: comercioLocalidad,
     comercioProvincia: comercioProvincia,
+    comercioCodigoPostal: comercioCodigoPostal,
+    comercioMunicipalidad: comercioMunicipalidad
   };
 
   const response = await http.put(url, data);
@@ -708,7 +712,9 @@ const runAction = async (action, form) => {
         form.comercioCalle,
         form.comercioNumeracion,
         form.comercioLocalidad,
-        form.comercioProvincia
+        form.comercioProvincia,
+        form.comercioCodigoPostal,
+        form.comercioMunicipalidad
       );
 
     case 'update-padron-a5':

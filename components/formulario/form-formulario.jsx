@@ -117,6 +117,7 @@ const FormFormulario = () => {
     nForm.comercioCalle = value ? nForm.calle : undefined;
     nForm.comercioNumeracion = value ? nForm.numeracion : undefined;
     nForm.comercioMunicipalidad = value ? nForm.municipalidad : undefined;
+    nForm.comercioCodigoPostal = value ? nForm.codigoPostal : undefined;
     nForm.comercioProvincia = value ? nForm.provincia : undefined;
     setForm(nForm);
   };
@@ -131,7 +132,7 @@ const FormFormulario = () => {
   }
 
   return (
-    <Form values={form} onSubmit={onSubmit}>
+    <Form values={form} onSubmit={onSubmit} customclass={classes.formlarge}>
       <div className={classes.section}>
         <div className={classes.title}>
           ¡Hola {form?.nombres} {form?.apellidos}!
@@ -193,6 +194,9 @@ const FormFormulario = () => {
         </Col>
         <Col xs={24} lg={12}>
           <Input label="Localidad" name="comercioMunicipalidad" required />
+        </Col>
+        <Col xs={24} lg={12}>
+          <Input label="Código Postal" name="comercioCodigoPostal" required />
         </Col>
         <Col xs={24} lg={12}>
           <Input label="Provincia" name="comercioProvincia" required />
