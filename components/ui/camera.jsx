@@ -34,6 +34,8 @@ const Camera = (props) => {
   const handleDevices = useCallback(
     (mediaDevices) => {
       const cameras = mediaDevices.filter(({ kind }) => kind === 'videoinput');
+debugger
+
       let camera = {};
       let nContraints = {};
 

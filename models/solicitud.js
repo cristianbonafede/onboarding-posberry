@@ -547,10 +547,20 @@ const updateMatriz = async () => {
   const data = {};
 
   const response = await http.patch(url, data);
+
   if (!response.error) {
     const estado = response.data.estado;
     sessionStorage.setItem('status', estado);
-    return true;
+
+    if (estado.toString() === solicitud.status.pending) {
+      return true;
+    } else if (estado.toString() === solicitud.status.validation) {
+      window.location.replace(`/procesando`);
+      return false;
+    } else {
+      window.location.replace(`/error?code=RECHAZO_MATRIZ_DE_RIESGO`);
+      return false;
+    }
   }
 
   window.location.replace(`error?code=${response.codigo}`);

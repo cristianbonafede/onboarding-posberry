@@ -93,3 +93,15 @@ input[type='file'] {
 a {
   color: inherit !important;
 }
+
+@media (min-width: 768px) and (-webkit-min-device-pixel-ratio: 1.5) {
+  .ant-input {
+    font-size: 9px;
+    padding: 5px 8px;
+  }
+
+  .ant-input-affix-wrapper {
+    font-size: 9px;
+    padding: 5px 8px;
+  }
+}

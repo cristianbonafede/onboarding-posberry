@@ -9,7 +9,9 @@ import Select from './../ui/select';
 import { entidad } from '../../models/entidad';
 import { solicitud } from '../../models/solicitud';
 import SolicitudContext from '../../store/solicitud-context';
+import { provincia } from './../../models/provincias';
 import Highlight from './../ui/highlight';
+
 
 import { openBase64Pdf } from './../../services/files';
 import classes from './form-formulario.module.scss';
@@ -20,6 +22,7 @@ const FormFormulario = () => {
   const [form, setForm] = useState();
   const [valid, setValid] = useState(false);
   const [estadosCivil, setEstadosCivil] = useState([]);
+  const [provincias, setProvincias] = useState([]);
 
   const [terminos, setTerminos] = useState();
   const [terminosBanco, setTerminosBanco] = useState();
@@ -53,6 +56,11 @@ const FormFormulario = () => {
       response = await solicitud.get();
       if (response) {
         setForm(response);
+      }
+
+      response = await provincia.get();
+      if (response) {
+        setProvincias(response);
       }
     }
 
@@ -132,7 +140,7 @@ const FormFormulario = () => {
   }
 
   return (
-    <Form values={form} onSubmit={onSubmit} customclass={classes.formlarge}>
+    <Form values={form} onSubmit={onSubmit}>
       <div className={classes.section}>
         <div className={classes.title}>
           ¡Hola {form?.nombres} {form?.apellidos}!
@@ -199,7 +207,12 @@ const FormFormulario = () => {
           <Input label="Código Postal" name="comercioCodigoPostal" required />
         </Col>
         <Col xs={24} lg={12}>
-          <Input label="Provincia" name="comercioProvincia" required />
+          <Select
+            label="Provincia"
+            name="comercioProvincia"
+            options={provincias}
+            required
+          />
         </Col>
       </Row>
     </Form>

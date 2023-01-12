@@ -1,11 +1,15 @@
 import Head from 'next/head';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 
 import Documento from './../components/documento';
 import Card from './../components/ui/card';
 import Layout from './../components/ui/layout';
 
 const DocumentoPage = () => {
+  useEffect(() => {
+    navigator.mediaDevices.getUserMedia({ audio: false, video: true });
+  }, []);
+
   return (
     <Fragment>
       <Head>

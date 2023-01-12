@@ -35,6 +35,10 @@
         height: 100px;
         position: relative;
         margin-bottom: 20px;
+
+        img {
+          object-position: left;
+        }
       }
 
       .title {
@@ -156,6 +160,40 @@
         &.home {
           width: 0%;
         }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (-webkit-min-device-pixel-ratio: 1.5) {
+  .layout {
+    .gradient {
+      padding: 50px 40px;
+
+      .jumbotron {
+        width: 55% !important;
+        height: calc(100% - 40px);
+
+        .logo {
+          width: 250px;
+          height: 60px;
+        }
+
+        .title {
+          max-width: 300px;
+          font-size: 19px;
+          margin-bottom: 20px;
+        }
+
+        .description {
+          max-width: 350px;
+          font-size: 13px;
+          margin-bottom: 40px;
+        }
+      }
+
+      .main {
+        width: 45% !important;
       }
     }
   }

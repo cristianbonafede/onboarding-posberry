@@ -175,9 +175,9 @@ const FormCredenciales = () => {
         validators={[compare()]}
       />
 
-      <div>
+      <div className={classes.validations}>
         Una contraseña segura debe tener:
-        <ul className={classes.validations}>
+        <ul>
           <li className={renderValidationClasses(validationLength)}>
             {renderValidationIcon(validationLength)}
             Al menos 8 caracteres
@@ -203,9 +203,10 @@ const FormCredenciales = () => {
       </div>
 
       <div className={classes.footer}>
-        Recordá tu <Highlight primary> contraseña</Highlight>
-        y no la compartas con nadie. Las necesitarás para ingresar
-        en el <Highlight primary>Homebanking Bind24</Highlight> y administrar tu cuenta.
+        Recordá tu <Highlight primary> contraseña</Highlight>y no la compartas
+        con nadie. Las necesitarás para ingresar en el{' '}
+        <Highlight primary>Homebanking Bind24</Highlight> y administrar tu
+        cuenta.
       </div>
     </Form>
   );

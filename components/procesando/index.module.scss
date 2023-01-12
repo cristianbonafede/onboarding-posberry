@@ -84,3 +84,23 @@
     }
   }
 }
+
+@media (min-width: 768px) and (-webkit-min-device-pixel-ratio: 1.5) {
+  .finalizar {
+    .content {
+      .image {
+        width: 140px;
+        height: 140px;
+      }
+
+      .text {
+        max-width: 300px;
+        font-size: 10px;
+
+        .title {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}

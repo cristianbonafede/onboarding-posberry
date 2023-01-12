@@ -143,3 +143,50 @@
     }
   }
 }
+
+@media (min-width: 768px) and (-webkit-min-device-pixel-ratio: 1.5) {
+  .error {
+    .container {
+      .title {
+        font-size: 1.7em;
+        margin-bottom: 4vh;
+      }
+
+      .description {
+        max-width: 40vw;
+        font-size: 0.9em;
+        margin-bottom: 2.5vh;
+
+        > div {
+          margin-bottom: 30px;
+        }
+
+        ul {
+          margin-top: 20px;
+        }
+      }
+
+      .action {
+        margin-top: 50px;
+      }
+    }
+
+    .image {
+      min-width: 60vw;
+      display: flex;
+      align-items: center;
+
+      .logo {
+        position: absolute;
+        top: 3vh;
+        left: 2.5vw;
+        width: 150px;
+        height: 50px;
+      }
+
+      svg {
+        width: 95%;
+      }
+    }
+  }
+}

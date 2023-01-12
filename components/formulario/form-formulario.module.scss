@@ -15,7 +15,16 @@
   }
 }
 
-.formlarge {
-  overflow-y: scroll;
-  overflow-x: hidden;
+@media (min-width: 768px) and (-webkit-min-device-pixel-ratio: 1.5) {
+  .section {
+    margin-bottom: 20px;
+
+    .title {
+      font-size: 12px;
+    }
+
+    .subtitle {
+      font-size: 9px;
+    }
+  }
 }

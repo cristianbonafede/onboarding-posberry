@@ -115,3 +115,43 @@
     }
   }
 }
+
+@media (min-width: 768px) and (-webkit-min-device-pixel-ratio: 1.5) {
+  .camera {
+    height: 130px;
+    width: 223px;
+
+    .instructions {
+      .icon {
+        font-size: 30px;
+        margin-bottom: 10px;
+      }
+
+      .title {
+        font-size: 12px;
+      }
+
+      .description {
+        font-size: 10px;
+      }
+    }
+
+    &.preview {
+      .instructions {
+        .icon {
+          margin-right: 5px;
+          margin-left: 20px;
+          font-size: 20px;
+        }
+
+        .title {
+          font-size: 10px;
+        }
+
+        .description {
+          color: #fff;
+        }
+      }
+    }
+  }
+}

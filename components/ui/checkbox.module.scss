@@ -30,3 +30,23 @@
     }
   }
 }
+
+@media (min-width: 768px) and (-webkit-min-device-pixel-ratio: 1.5) {
+  .checkbox {
+    .box {
+      font-size: 10px;
+      min-height: 20px;
+      min-width: 20px;
+      margin-right: 10px;
+    }
+    .row {
+      .label {
+        font-size: 9px;
+      }
+
+      .description {
+        font-size: 8px;
+      }
+    }
+  }
+}

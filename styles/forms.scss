@@ -24,3 +24,19 @@
   margin: 30px -30px 40px -30px;
   width: 115%;
 }
+
+@media (min-width: 768px) and (-webkit-min-device-pixel-ratio: 1.5) {
+  .ant-form-item {
+    margin-bottom: 15px;
+
+    .ant-form-item-label {
+      label {
+        font-size: 9px;
+      }
+    }
+
+    .ant-form-item-explain-error {
+      font-size: 9px;
+    }
+  }
+}

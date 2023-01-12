@@ -21,3 +21,9 @@
     margin: 0;
   }
 }
+
+@media (min-width: 768px) and (-webkit-min-device-pixel-ratio: 1.5) {
+  .card {
+    max-width: 440px;
+  }
+}
