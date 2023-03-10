@@ -3,12 +3,14 @@ import { useRouter } from 'next/router';
 import Highlight from '../../ui/highlight';
 
 import classes from './../index.module.scss';
+import LayoutErrorBase from './layout-error-base';
 
 const CredencialesIncompletas = () => {
   const router = useRouter();
 
 
   return (
+    <LayoutErrorBase>
     <div>
       <div className={classes.title}>
         <Highlight primary>¡Ya casi terminamos!</Highlight>
@@ -20,6 +22,7 @@ const CredencialesIncompletas = () => {
       </div>
 
     </div>
+    </LayoutErrorBase>
   );
 };
 

@@ -9,7 +9,7 @@ const FinalizarPage = () => {
   return (
     <Fragment>
       <Head>
-        <title>Finalizar - BIND Pagos</title>
+        <title>Finalizar - Soluciones Andinas</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Layout>

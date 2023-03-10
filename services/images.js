@@ -4,6 +4,10 @@ export const compressImage = (image, quality) => {
   return new Promise((resolve, _) => {
     new Compressor(image, {
       quality: quality,
+      maxWidth: 1920,
+      maxHeight: 1920,
+      convertTypes: ['image/png', 'image/webp'],
+      convertSize: 0,
       success: resolve,
       error: (error) => {
         console.log(error.message);
@@ -48,4 +52,31 @@ export const previewImage = (base64) => {
 export const previewVideo = (base64) => {
   var newTab = window.open();
   newTab.document.body.innerHTML = `<video src="${base64}" controls="true">`;
+};
+
+export const rotateImage = (base64, clockwise) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.addEventListener('load', () => {
+      let canvas = document.createElement('canvas');
+      canvas.height = img.width;
+      canvas.width = img.height;
+
+      let context = canvas.getContext('2d');
+
+      if (clockwise) {
+        context.rotate((90 * Math.PI) / 180);
+        context.translate(0, -canvas.width);
+      } else {
+        context.rotate((-90 * Math.PI) / 180);
+        context.translate(-canvas.height, 0);
+      }
+
+      context.drawImage(img, 0, 0);
+
+      let rotated = canvas.toDataURL();
+      resolve(rotated);
+    });
+    img.src = base64;
+  });
 };

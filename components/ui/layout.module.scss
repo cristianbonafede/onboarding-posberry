@@ -72,6 +72,46 @@
   }
 }
 
+.landscape {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+  width: 100vw;
+  height: 100vh;
+  margin: auto auto;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .image {
+    width: 200px;
+    height: 200px;
+    animation: rotate 4s forwards;
+  }
+
+  .title {
+    max-width: 500px;
+    font-size: 1.2em;
+    font-weight: 500;
+    margin-bottom: 50px;
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    40% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(90deg);
+    }
+  }
+}
+
 @media only screen and (max-width: 1500px) {
   .layout {
     .gradient {

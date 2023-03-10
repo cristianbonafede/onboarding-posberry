@@ -4,6 +4,7 @@ import Button from '../../ui/button';
 import Highlight from './../../ui/highlight';
 
 import classes from './../index.module.scss';
+import LayoutErrorBase from './layout-error-base';
 
 const RechazoMatrizRiesgo = () => {
   const router = useRouter();
@@ -15,6 +16,7 @@ const RechazoMatrizRiesgo = () => {
   };
 
   return (
+    <LayoutErrorBase>
     <div>
       <div className={classes.title}>
         <Highlight primary>¡Ups! Algo salió mal</Highlight>
@@ -26,8 +28,8 @@ const RechazoMatrizRiesgo = () => {
         </div>
         <div>
           Por favor, comunicate con{' '}
-          <a href="mailto:altas@bindpagos.com.ar" style={{ color: '#ff9340' }}>
-            altas@bindpagos.com.ar
+          <a href="mailto:soluciones@sandinas.com.ar" style={{ color: '#ff9340' }}>
+            soluciones@sandinas.com.ar
           </a>
         </div>
       </div>
@@ -35,6 +37,7 @@ const RechazoMatrizRiesgo = () => {
         <Button type="primary" text="Reintentar" onClick={onClickRetry} />
       </div>
     </div>
+    </LayoutErrorBase>
   );
 };
 

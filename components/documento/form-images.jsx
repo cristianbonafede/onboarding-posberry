@@ -6,23 +6,18 @@ import Form from './../ui/form';
 
 import SolicitudContext from '../../store/solicitud-context';
 import { solicitud } from './../../models/solicitud';
+import { rotateImage } from './../../services/images';
 
 const FormImages = () => {
   const context = useContext(SolicitudContext);
 
-  const onCameraSubmit = (value, crop = null) => {
+  const onCameraSubmit = async (value, isMobile = null) => {
+    if (isMobile) {
+      value = await rotateImage(value, false);
+    }
+
     let nForm = { ...context.form };
     nForm[context.formProperty] = value;
-
-    if (crop !== null) {
-      if (context.formProperty === 'frente') {
-        nForm['cropFrente'] = crop;
-      }
-
-      if (context.formProperty === 'dorso') {
-        nForm['cropDorso'] = crop;
-      }
-    }
 
     context.updateForm(nForm);
     context.changeScreen(solicitud.screens.form);

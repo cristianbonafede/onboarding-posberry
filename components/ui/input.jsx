@@ -15,6 +15,7 @@ const Input = (props) => {
     hidden,
     validators,
     onChange,
+    maxLength
   } = props;
 
   const [focused, setFocused] = useState(false);
@@ -80,6 +81,7 @@ const Input = (props) => {
           readOnly={readonly}
           className={`${hidden && 'hidden'}`}
           onChange={onChange}
+          maxLength={maxLength ?? 99999999}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={renderStyle()}

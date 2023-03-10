@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Tooltip } from 'antd';
+import Image from 'next/image';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { FiCamera, FiImage, FiVideo } from 'react-icons/fi';
+import { FiCamera, FiImage, FiRepeat, FiVideo } from 'react-icons/fi';
 import Webcam from 'react-webcam';
 
 import SolicitudContext from '../../store/solicitud-context';
@@ -18,74 +19,77 @@ const Camera = (props) => {
   const mediaRecorderRef = useRef(null);
   const fileRef = useRef(null);
 
+  const [cameras, setCameras] = useState();
+  const [currentCamera, setCurrentCamera] = useState();
   const [colorPrimary, setColorPrimary] = useState();
   const [colorText, setColorText] = useState();
 
   const [available, setAvailable] = useState(false);
   const [capturing, setCapturing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [recordedChunks, setRecordedChunks] = useState([]);
 
-  const [devices, setDevices] = useState([]);
   const [contraints, setContraints] = useState();
 
   const isMobile = window.innerWidth <= window.innerHeight;
-  const mirrored = type === 'video' && position === 'front';
 
-  const handleDevices = useCallback(
-    (mediaDevices) => {
-      const cameras = mediaDevices.filter(({ kind }) => kind === 'videoinput');
-debugger
-
-      let camera = {};
-      let nContraints = {};
-
-      if (isMobile) {
-        if (position === 'back') {
-          nContraints.width = { min: 1080 };
-          nContraints.height = { min: 1920 };
-          nContraints.aspectRatio = 1.777777778;
-        } else {
-          nContraints.width = { min: 540 };
-          nContraints.height = { min: 960 };
-          nContraints.aspectRatio = 1.777777778;
-        }
-      }
-
-      if (position === 'front') {
-        camera = cameras[0];
-
-        // alert(JSON.stringify(camera));
-
-        if (camera.deviceId) {
-          nContraints.deviceId = camera.deviceId;
-        } else {
-          nContraints.facingMode = 'user';
-        }
-      } else {
-        camera = cameras.pop();
-
-        // alert(JSON.stringify(camera));
-
-        if (camera.deviceId) {
-          nContraints.deviceId = camera.deviceId;
-        } else {
-          nContraints.facingMode = { exact: 'environment' };
-        }
-      }
-
-      setContraints(nContraints);
-    },
-    [setDevices]
-  );
-
-  useEffect(() => {
-    navigator.mediaDevices.enumerateDevices().then(handleDevices);
-  }, [handleDevices]);
-
+  // Inicializar theme
   useEffect(() => {
     setColorPrimary(sessionStorage.getItem('color-primary'));
     setColorText(sessionStorage.getItem('color-text'));
   }, []);
+
+  // Cargar camaras
+  useEffect(() => {
+    async function getCameras() {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const nCameras = devices.filter(({ kind }) => kind === 'videoinput');
+      setCameras(nCameras);
+
+      const savedCamera = sessionStorage.getItem('camera');
+      const nCamera = savedCamera ? JSON.parse(savedCamera) : undefined;
+      setupCamera(nCamera);
+    }
+
+    getCameras();
+  }, []);
+
+  const setupCamera = (camera) => {
+    let nContraints = {};
+
+    if (camera) {
+      nContraints.deviceId = camera.deviceId;
+    } else {
+      nContraints.facingMode = position === 'front' ? 'user' : 'environment';
+    }
+
+    if (isMobile) {
+      nContraints.width = position === 'back' ? { min: 720 } : { min: 540 };
+      nContraints.height = position === 'back' ? { min: 1280 } : { min: 960 };
+      nContraints.aspectRatio = 1.777777778;
+    }
+
+    setContraints(nContraints);
+  };
+
+  const onChangeCamera = () => {
+    let index = -1;
+
+    if (currentCamera) {
+      index = cameras.indexOf(currentCamera);
+
+      if (index === cameras.length - 1) {
+        index = -1;
+      }
+    } else {
+      index = contraints?.facingMode === 'user' ? 0 : -1;
+    }
+
+    const nCamera = cameras[index + 1];
+    sessionStorage.setItem('camera', JSON.stringify(nCamera));
+    setCurrentCamera(nCamera);
+    setupCamera(nCamera);
+  };
 
   const formatTimer = (seconds) => {
     const nMinutes = seconds > 59 ? Math.floor(seconds / 60) : 0;
@@ -112,6 +116,7 @@ debugger
   };
 
   const takePicture = async () => {
+    setLoading(true);
     const base64 = webcamRef.current.getScreenshot();
     onSubmit(base64, isMobile);
   };
@@ -126,11 +131,12 @@ debugger
       return;
     }
 
+    setLoading(true);
     const file = files[0];
     const base64 = await blobToBase64(file);
     onSubmit(base64, false);
 
-    fileRef.current.value = '';
+    e.target.value = '';
   };
 
   const recordVideo = useCallback(() => {
@@ -165,6 +171,8 @@ debugger
 
   const handleDownload = useCallback(async () => {
     if (recordedChunks.length) {
+      setLoading(true);
+
       const blob = new Blob(recordedChunks, {
         type: 'video/mp4',
       });
@@ -179,11 +187,15 @@ debugger
 
   const renderUpload = () => {
     if (!upload) {
-      return <div className={classes.placeholder}></div>;
+      return (
+        <div className={classes.action}>
+          <div className={classes.placeholder}></div>
+        </div>
+      );
     }
 
     return (
-      <Tooltip placement="top" title="Galeria" visible={true}>
+      <div className={classes.action}>
         <div
           className={classes.upload}
           onClick={onClickUpload}
@@ -201,7 +213,8 @@ debugger
             onChange={onUploadFile}
           />
         </div>
-      </Tooltip>
+        <div className={classes.label}>Galeria</div>
+      </div>
     );
   };
 
@@ -210,7 +223,7 @@ debugger
     const text = type === 'video' ? 'Grabar video' : 'Tomar foto';
 
     return (
-      <Tooltip placement="top" title={text} visible={true}>
+      <div className={classes.action}>
         <div
           className={classes.shoot}
           onClick={onClickShoot}
@@ -222,7 +235,8 @@ debugger
         >
           <div className={classes.icon}>{icon}</div>
         </div>
-      </Tooltip>
+        <div className={classes.label}>{text}</div>
+      </div>
     );
   };
 
@@ -265,7 +279,6 @@ debugger
           className={classes.webcam}
           ref={webcamRef}
           videoConstraints={contraints}
-          mirrored={mirrored}
           audio={false}
           forceScreenshotSourceSize
           screenshotFormat="image/jpeg"
@@ -274,8 +287,38 @@ debugger
       )}
 
       <div className={classes.overlay}>
-        {overlay === 'card' && <div className={classes.card}></div>}
-        {overlay === 'face' && <div className={classes.face}></div>}
+        {available && overlay === 'card' && (
+          <div className={classes.card}>
+            {isMobile && (
+              <Image
+                src={
+                  context.formProperty === 'frente'
+                    ? '/images/id-front-vertical.png'
+                    : '/images/id-back-vertical.png'
+                }
+                alt="Status"
+                layout="fill"
+                objectFit="contain"
+              />
+            )}
+            {!isMobile && (
+              <Image
+                src={
+                  context.formProperty === 'frente'
+                    ? '/images/id-front.png'
+                    : '/images/id-back.png'
+                }
+                alt="overlay"
+                layout="fill"
+                objectFit="contain"
+              />
+            )}
+          </div>
+        )}
+
+        {available && overlay === 'face' && (
+          <div className={classes.face}></div>
+        )}
 
         {capturing && type === 'video' && (
           <div className={classes.timer}>
@@ -284,11 +327,40 @@ debugger
           </div>
         )}
 
-        {available && !capturing && (
+        {available && !capturing && !loading && (
           <div className={classes.actions}>
             {renderUpload()}
             {renderAction()}
-            <div className={classes.placeholder}></div>
+            {(!cameras || cameras.length === 1) && (
+              <div className={classes.action}>
+                <div className={classes.placeholder}></div>
+              </div>
+            )}
+            {cameras && cameras.length > 1 && (
+              <div className={classes.action}>
+                <Tooltip
+                  visible={true}
+                  arrowPointAtCenter
+                  placement="topRight"
+                  title="Seleccionar Cámara"
+                  color={colorPrimary}
+                  overlayInnerStyle={{ fontWeight: 600, borderRadius: '10px' }}
+                >
+                  <div
+                    className={classes.change}
+                    onClick={onChangeCamera}
+                    style={{
+                      color: colorText,
+                      backgroundColor: colorPrimary,
+                      boxShadow: `0 0 10px ${colorPrimary}`,
+                    }}
+                  >
+                    <FiRepeat />
+                  </div>
+                </Tooltip>
+                <div className={classes.label}>Cambiar cámara</div>
+              </div>
+            )}
           </div>
         )}
       </div>

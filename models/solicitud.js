@@ -20,6 +20,7 @@ const screens = {
   camera: 'camera',
   otp: 'otp',
   empty: 'empty',
+  cameraBlocked: 'camera-blocked',
 };
 
 const status = {
@@ -448,7 +449,7 @@ const update = async (
     comercioLocalidad: comercioLocalidad,
     comercioProvincia: comercioProvincia,
     comercioCodigoPostal: comercioCodigoPostal,
-    comercioMunicipalidad: comercioMunicipalidad
+    comercioMunicipalidad: comercioMunicipalidad,
   };
 
   const response = await http.put(url, data);
@@ -648,6 +649,24 @@ const updateDispositivo = async (urlPJ) => {
   return false;
 };
 
+const updateCuentaComitente = async () => {
+  if (mockup) {
+    await mockupDelay();
+    return true;
+  }
+
+  const id = sessionStorage.getItem('solicitud');
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/alta-cuenta-comitente`;
+
+  const response = await http.patch(url);
+
+  if (!response.error) {
+    return true;
+  }
+
+  return false;
+};
+
 const runAction = async (action, form) => {
   switch (action.id) {
     case 'create':
@@ -757,6 +776,9 @@ const runAction = async (action, form) => {
     case 'update-dispositivo-pj':
       return await updateDispositivo('pj');
 
+    case 'update-cuenta-comitente':
+      return await updateCuentaComitente();
+
     default:
       return false;
   }
@@ -806,4 +828,5 @@ export const solicitud = {
   updateLegajoDigital: updateLegajoDigital,
   updateCredenciales: updateCredenciales,
   runAction: runAction,
+  updateCuentaComitente: updateCuentaComitente,
 };

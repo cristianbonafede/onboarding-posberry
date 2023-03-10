@@ -28,13 +28,18 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    padding-bottom: 40px;
+    padding-bottom: 60px;
 
     .card {
+      position: relative;
       border-radius: 10px;
       height: 383px;
       width: 610px;
       box-shadow: 0 0 0 1000px rgba(0, 0, 0, 1);
+
+      img {
+        opacity: 0.2;
+      }
     }
 
     .face {
@@ -72,69 +77,69 @@
     .actions {
       width: 100%;
       position: absolute;
-      bottom: 50px;
+      bottom: 30px;
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-evenly;
 
-      .shoot {
-        border-radius: 100px;
-        padding: 15px;
+      .action {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
+        width: 100%;
 
-        .icon {
-          font-size: 35px;
+        .upload {
+          height: 60px;
+          width: 60px;
+          font-size: 30px;
+          border-radius: 100px;
           display: flex;
           align-items: center;
           justify-content: center;
+          cursor: pointer;
+        }
+
+        .shoot {
+          height: 70px;
+          width: 70px;
+          border-radius: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+
+          .icon {
+            font-size: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+
+        .change {
+          height: 60px;
+          width: 60px;
+          font-size: 30px;
+          border-radius: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+
+        .placeholder {
+          width: 60px;
+        }
+
+        .label {
+          color: #fff;
+          text-align: center;
+          margin-top: 10px;
         }
       }
-
-      .upload {
-        font-size: 30px;
-        border-radius: 100px;
-        padding: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
-
-      .placeholder {
-        width: 55px;
-        height: 55px;
-      }
     }
-  }
-}
-
-@-webkit-keyframes pulse {
-  0% {
-    -webkit-box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4);
-  }
-  70% {
-    -webkit-box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
-  }
-  100% {
-    -webkit-box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
-  }
-}
-@keyframes pulse {
-  0% {
-    -moz-box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4);
-    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4);
-  }
-  70% {
-    -moz-box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
-    box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
-  }
-  100% {
-    -moz-box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
-    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
   }
 }
 
@@ -163,13 +168,14 @@
 @media only screen and (max-width: 768px) {
   .camera {
     border-radius: 0;
+    margin-top: 0px;
 
     .overlay {
       border-radius: 0;
 
       .card {
-        height: 313px;
-        width: 500px;
+        width: 313px;
+        height: 500px;
       }
 
       .timer {
@@ -177,21 +183,18 @@
       }
 
       .actions {
-        bottom: 30px;
+        bottom: 20px;
 
         .upload {
           font-size: 20px;
-          padding: 15px;
         }
 
         .shoot {
           font-size: 30px;
-          padding: 15px;
         }
 
         .change {
           font-size: 20px;
-          padding: 15px;
         }
       }
     }
@@ -202,8 +205,8 @@
   .camera {
     .overlay {
       .card {
-        height: 219px;
-        width: 350px;
+        width: 320px;
+        height: 511px;
       }
 
       .face {
@@ -244,7 +247,8 @@
         bottom: 30px;
 
         .shoot {
-          padding: 10px;
+          height: 50px;
+          width: 50px;
 
           .icon {
             font-size: 25px;
@@ -252,15 +256,47 @@
         }
 
         .upload {
+          height: 45px;
+          width: 45px;
           font-size: 20px;
-          padding: 10px;
         }
 
-        .placeholder {
-          width: 55px;
-          height: 55px;
+        .change {
+          height: 45px;
+          width: 45px;
+          font-size: 20px;
+        }
+
+        .label {
+          font-size: 10px;
         }
       }
     }
+  }
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+  }
+}
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4);
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+    box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
   }
 }

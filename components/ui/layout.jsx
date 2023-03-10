@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import SolicitudContext from '../../store/solicitud-context';
 
@@ -18,8 +18,28 @@ const Layout = (props) => {
   const context = useContext(SolicitudContext);
 
   const [visible, setVisible] = useState(false);
+  const [landscape, setLandscape] = useState(false);
   const [logo, setLogo] = useState();
   const [type, setType] = useState();
+
+  useEffect(() => {
+    function handleResize() {
+      const isMobile =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+      const { innerWidth: width, innerHeight: height } = window;
+
+      setLandscape(isMobile && width > 768 && width > height);
+
+      let vh = innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (context.steps.length === 0) {
@@ -30,15 +50,6 @@ const Layout = (props) => {
     setType(sessionStorage.getItem('type'));
     setVisible(true);
   }, [context.steps]);
-
-  const onClickRegister = () => {
-    const url = context.steps[0].url;
-    router.push(url);
-  };
-
-  if (!visible) {
-    return <></>;
-  }
 
   const renderText = () => {
     // Texto Credenciales
@@ -58,12 +69,11 @@ const Layout = (props) => {
     }
     // Texto Persona Juridica
     if (type == 'juridica') {
-
       return (
         <div>
           <div className={classes.title}>
             ¡Bienvenido! Para comenzar a cobrar con QR necesitas tener una
-            <Highlight primary>cuenta en el banco BIND.</Highlight>
+            <Highlight primary>cuenta en el banco.</Highlight>
           </div>
           <div className={classes.description}>
             Te contactaremos con un representante del banco para completar el
@@ -91,6 +101,15 @@ const Layout = (props) => {
     }
   };
 
+  const onClickRegister = () => {
+    const url = context.steps[0].url;
+    router.push(url);
+  };
+
+  if (!visible) {
+    return <></>;
+  }
+
   return (
     <div className={classes.layout}>
       <div className={classes.gradient}>
@@ -107,6 +126,22 @@ const Layout = (props) => {
           {children}
         </div>
       </div>
+      {landscape && (
+        <div className={classes.landscape}>
+          <div className={classes.image}>
+            <Image
+              src="/images/rotate.png"
+              alt="Logo"
+              layout="fill"
+              objectFit="contain"
+            />
+          </div>
+          <div className={classes.title}>
+            Utilizá tu dispositivo en{' '}
+            <Highlight primary>posicion vertical</Highlight>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

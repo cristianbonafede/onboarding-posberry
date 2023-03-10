@@ -1,12 +1,15 @@
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
+import { FiCamera, FiImage, FiRepeat } from 'react-icons/fi';
 
+import CameraBlocked from '../ui/camera-blocked';
 import Checklist from '../ui/checklist';
 import Header from '../ui/header';
 import Instructions from './../ui/instructions';
 import FormImages from './form-images';
 
 import { solicitud } from '../../models/solicitud';
+import { startCamera } from '../../services/camera';
 import SolicitudContext from '../../store/solicitud-context';
 
 import Highlight from './../ui/highlight';
@@ -17,6 +20,7 @@ const Documento = () => {
   const context = useContext(SolicitudContext);
 
   const [visible, setVisible] = useState(false);
+  const [colorPrimary, setColorPrimary] = useState();
 
   useEffect(() => {
     const validateStep = async () => {
@@ -26,8 +30,16 @@ const Documento = () => {
         return;
       }
 
-      setVisible(true);
-      context.updateStep(router);
+      try {
+        await startCamera();
+      } catch (error) {
+        context.changeScreen(solicitud.screens.cameraBlocked);
+      } finally {
+        setColorPrimary(sessionStorage.getItem('color-primary'));
+        sessionStorage.removeItem('camera');
+        setVisible(true);
+        context.updateStep(router);
+      }
     };
 
     validateStep();
@@ -50,11 +62,31 @@ const Documento = () => {
       >
         Para poder comenzar, necesitamos una foto del
         <Highlight primary>frente</Highlight>y
-        <Highlight primary>dorso</Highlight> de tu documento. Recordá que las
-        fotos tienen que ser lo mas nítidas posibles.
+        <Highlight primary>dorso</Highlight> de tu documento. Las fotos deben ser nítidas y legibles.
+        <div className={classes.list}>
+          <div className={classes.item}>
+            <div className={classes.icon} style={{ color: colorPrimary }}>
+              <FiCamera />
+            </div>
+            Tomá una foto con tu celular
+          </div>
+          <div className={classes.item}>
+            <div className={classes.icon} style={{ color: colorPrimary }}>
+              <FiRepeat />
+            </div>
+            Podés cambiar la cámara para mejorar  la calidad de la foto
+          </div>
+          <div className={classes.item}>
+            <div className={classes.icon} style={{ color: colorPrimary }}>
+              <FiImage />
+            </div>
+            Podés cargar una foto que ya tengas guardada
+          </div>
+        </div>
       </Instructions>
       <FormImages />
       <Checklist onFinish={onFinish} />
+      <CameraBlocked />
     </div>
   );
 };

@@ -34,7 +34,7 @@ const HomePage = () => {
   return (
     <Fragment>
       <Head>
-        <title>Onboarding - BIND Pagos</title>
+        <title>Onboarding - Soluciones Andinas</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Layout>

@@ -4,6 +4,7 @@ import Button from './../../ui/button';
 import Highlight from './../../ui/highlight';
 
 import classes from './../index.module.scss';
+import LayoutErrorBase from './layout-error-base';
 
 const DocumentoNoEncontrado = () => {
   const router = useRouter();
@@ -15,6 +16,7 @@ const DocumentoNoEncontrado = () => {
   };
 
   return (
+    <LayoutErrorBase>
     <div>
       <div className={classes.title}>
         <Highlight primary>¡Ups! Algo salió mal</Highlight>
@@ -27,6 +29,7 @@ const DocumentoNoEncontrado = () => {
         <Button type="primary" text="Reintentar" onClick={onClickRetry} />
       </div>
     </div>
+    </LayoutErrorBase>
   );
 };
 

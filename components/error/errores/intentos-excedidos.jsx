@@ -3,11 +3,13 @@ import { useRouter } from 'next/router';
 import Highlight from './../../ui/highlight';
 
 import classes from './../index.module.scss';
+import LayoutErrorBase from './layout-error-base';
 
 const IntentosExcedidos = () => {
   const router = useRouter();
 
   return (
+    <LayoutErrorBase>
     <div>
       <div className={classes.title}>
         <Highlight primary>¡Ups! Algo salió mal</Highlight>
@@ -20,13 +22,14 @@ const IntentosExcedidos = () => {
         Por favor, volvé a intentarlo en 24hs. Si el problema persiste
         comunicate con{' '}
         <a
-          href="mailto:altas@bindpagos.com.ar"
+          href="mailto:soluciones@sandinas.com.ar"
           style={{ color: '#ff9340' }}
         >
-          altas@bindpagos.com.ar
+          soluciones@sandinas.com.ar
         </a>
       </div>
     </div>
+    </LayoutErrorBase>
   );
 };
 

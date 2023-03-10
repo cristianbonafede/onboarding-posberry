@@ -57,17 +57,15 @@ const Documento = () => {
         </div>
         <div className={classes.text}>
           <div className={classes.title}>
-            ¡Felicitaciones! Tu alta fue exitosa.
+            ¡Felicitaciones!
           </div>
           <div>
-          Dentro de
+          Tu alta fue exitosa y
             <Highlight primary>
-            24 hs hábiles podrás cobrar con QR
+            te enviaremos un email
             </Highlight>
-            y tus ventas se 
-            acreditarán en línea en tu cuenta de Banco Industrial.
-            Te enviamos por mail info para operar. Si tenés consultas
-            comunicate a <Highlight primary>altas@bindpagos.com.ar</Highlight>
+            para que puedas comenzar a cobrar con QR.<br/>
+            <Highlight primary>No olvides revisar tu SPAM</Highlight>
           </div>
         </div>
       </div>

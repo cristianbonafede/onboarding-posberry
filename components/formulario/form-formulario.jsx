@@ -12,7 +12,6 @@ import SolicitudContext from '../../store/solicitud-context';
 import { provincia } from './../../models/provincias';
 import Highlight from './../ui/highlight';
 
-
 import { openBase64Pdf } from './../../services/files';
 import classes from './form-formulario.module.scss';
 
@@ -100,7 +99,7 @@ const FormFormulario = () => {
               openBase64Pdf(terminosBanco.contenido);
             }}
           >
-            Terminos & Condiciones &nbsp;para ser cliente Banco Bind
+            Terminos & Condiciones &nbsp;para ser cliente Banco
           </a>
         </Highlight>
       </div>
@@ -185,7 +184,7 @@ const FormFormulario = () => {
       </div>
       <Row gutter={16}>
         <Col xs={24} lg={24}>
-          <Input label="Nombre de fantasía" name="comercioNombre" required />
+          <Input label="Nombre de fantasía" name="comercioNombre" required maxLength={40}/>
         </Col>
         <Col xs={24} lg={24}>
           <Checkbox

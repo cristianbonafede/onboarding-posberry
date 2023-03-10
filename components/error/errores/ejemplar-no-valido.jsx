@@ -4,6 +4,7 @@ import Button from '../../ui/button';
 import Highlight from './../../ui/highlight';
 
 import classes from './../index.module.scss';
+import LayoutErrorBase from './layout-error-base';
 
 const EjemplarNoValido = () => {
   const router = useRouter();
@@ -15,6 +16,7 @@ const EjemplarNoValido = () => {
   };
 
   return (
+    <LayoutErrorBase>
     <div>
       <div className={classes.title}>
         <Highlight primary>¡Ups! Algo salió mal</Highlight>
@@ -36,8 +38,8 @@ const EjemplarNoValido = () => {
         <div>
           Por favor, asegurate de contar con el último ejemplar vigente y volvé
           a intentarlo más tarde. Si el problema persiste comunicate con{' '}
-          <a href="mailto:altas@bindpagos.com.ar" style={{ color: '#ff9340' }}>
-            altas@bindpagos.com.ar
+          <a href="mailto:soluciones@sandinas.com.ar" style={{ color: '#ff9340' }}>
+            altas@mailto:soluciones@sandinas.com.ar
           </a>
         </div>
       </div>
@@ -45,6 +47,7 @@ const EjemplarNoValido = () => {
         <Button type="primary" text="Reintentar" onClick={onClickRetry} />
       </div>
     </div>
+    </LayoutErrorBase>
   );
 };
 

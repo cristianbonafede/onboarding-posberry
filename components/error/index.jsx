@@ -1,8 +1,6 @@
-import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import Svg from './svg';
 
 import CredencialesNoValidas from './errores/credenciales-no-validas';
 import DocumentoNoEncontrado from './errores/documento-no-encontrado';
@@ -21,7 +19,7 @@ import SolicitudPreviaAprobada from './errores/solicitud-previa-aprobada';
 import ValidacionFacialIncompleta from './errores/valdiacion-facial-incompleta';
 
 import CredencialesIncompletas from './errores/credenciales-incompleta';
-import classes from './index.module.scss';
+import PendienteBindid from './errores/pendiente-bindid';
 
 const Error = () => {
   const router = useRouter();
@@ -39,49 +37,52 @@ const Error = () => {
 
     switch (code) {
       case 'DOCUMENTO_NO_ENCONTRADO':
-        return <DocumentoNoEncontrado />;
+          return <DocumentoNoEncontrado/>
 
       case 'PDF417_NO_ENCONTRADO':
-        return <Pdf417NoEncontrado />;
+          return <Pdf417NoEncontrado/>
 
       case 'INTENTOS_EXCEDIDOS':
-        return <IntentosExcedidos />;
+          return <IntentosExcedidos/>
 
       case 'PERSONA_NO_ENCONTRADA':
-        return <PersonaNoEncontrada />;
+          return <PersonaNoEncontrada/>
 
       case 'PERSONA_FALLECIDA':
-        return <PersonaFallecida />;
+          return <PersonaFallecida/>
 
       case 'EJEMPLAR_NO_VALIDO':
-        return <EjemplarNoValido />;
+          return <EjemplarNoValido/>
 
       case 'PRUEBA_VIDA_INTENTOS_EXCEDIDOS':
-        return <PruebaVidaIntentosExcedidos />;
+          return <PruebaVidaIntentosExcedidos/>
 
       case 'RECHAZO_MATRIZ_DE_RIESGO':
-        return <RechazoMatrizRiesgo />;
+          return <RechazoMatrizRiesgo/>
 
       case 'SOLICITUD_PREVIA_APROBADA':
-        return <SolicitudPreviaAprobada />;
+          return <SolicitudPreviaAprobada/>
 
       case 'INTENTOS_EXCEDIDOS_OTP_EMAIL':
-        return <IntentosExcedidosOtpEmail />;
+        return <IntentosExcedidosOtpEmail/>
 
       case 'INTENTOS_EXCEDIDOS_OTP_SMS':
-        return <IntentosExcedidosOtpSms />;
+        return <IntentosExcedidosOtpSms/>
 
       case 'VALIDACION_FACIAL_INCOMPLETA':
-        return <ValidacionFacialIncompleta />;
+        return <ValidacionFacialIncompleta/>
 
       case 'PRUEBA_VIDA_INCOMPLETA':
-        return <PruebaVidaIncompleta />;
+        return <PruebaVidaIncompleta/>
 
       case 'CREDENCIALES_NO_VALIDAS':
-        return <CredencialesNoValidas />;
+        return <CredencialesNoValidas/>
 
       case 'CREDENCIALES_INCOMPLETAS':
-        return <CredencialesIncompletas />;
+          return <CredencialesIncompletas/>
+
+      case 'PENDIENTE_BINDID':
+          return <PendienteBindid/> 
 
       default:
         return <Generico />;
@@ -89,15 +90,11 @@ const Error = () => {
   };
 
   return (
-    <div className={classes.error}>
-      <div className={classes.image}>
-        <div className={classes.logo}>
-          {logo && <Image src={logo} alt="Logo" layout="fill" objectFit="contain" />}
-        </div>
-        <Svg />
-      </div>
-      <div className={classes.container}>{ready && renderError()}</div>
-    </div>
+    <React.Fragment>
+    {ready && renderError()}
+
+    </React.Fragment>
+    
   );
 };
 

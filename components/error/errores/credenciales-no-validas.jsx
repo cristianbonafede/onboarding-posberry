@@ -4,6 +4,7 @@ import Button from '../../ui/button';
 import Highlight from './../../ui/highlight';
 
 import classes from './../index.module.scss';
+import LayoutErrorBase from './layout-error-base';
 
 const CredencialesNoValidas = () => {
   const router = useRouter();
@@ -13,6 +14,7 @@ const CredencialesNoValidas = () => {
   };
 
   return (
+    <LayoutErrorBase>
     <div>
       <div className={classes.title}>
         <Highlight primary>¡Ups! Algo salió mal</Highlight>
@@ -25,6 +27,7 @@ const CredencialesNoValidas = () => {
         <Button type="primary" text="Reintentar" onClick={onClickRetry} />
       </div>
     </div>
+  </LayoutErrorBase>
   );
 };
 

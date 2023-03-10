@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
+import { solicitud } from '../../models/solicitud';
 
 import SolicitudContext from '../../store/solicitud-context';
 
@@ -63,7 +64,10 @@ const Header = () => {
     router.push(previousStep.url);
   };
 
-  if (!visible) {
+  if (
+    !visible ||
+    (window.innerWidth <= 768 && context.screen === solicitud.screens.camera)
+  ) {
     return <></>;
   }
 

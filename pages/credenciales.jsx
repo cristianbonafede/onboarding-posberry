@@ -9,7 +9,7 @@ const CredencialesPage = () => {
   return (
     <Fragment>
       <Head>
-        <title>Credenciales - BIND Pagos</title>
+        <title>Credenciales - Soluciones Andinas</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Layout>

@@ -52,7 +52,7 @@ const FormTelefono = () => {
       <Input
         label="Teléfono"
         name="telefono"
-        placeholder="261234567890"
+        placeholder="1123456789"
         required
         autofocus
         readonly={readonly}

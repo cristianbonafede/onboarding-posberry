@@ -1,12 +1,14 @@
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 
+import CameraBlocked from '../ui/camera-blocked';
 import Checklist from '../ui/checklist';
 import Header from '../ui/header';
 import Instructions from '../ui/instructions';
 import FormVideo from './form-video';
 
 import { solicitud } from '../../models/solicitud';
+import { startCamera } from '../../services/camera';
 import SolicitudContext from '../../store/solicitud-context';
 
 import Highlight from './../ui/highlight';
@@ -26,8 +28,15 @@ const PruebaVida = () => {
         return;
       }
 
-      setVisible(true);
-      context.updateStep(router);
+      try {
+        await startCamera();
+      } catch (error) {
+        context.changeScreen(solicitud.screens.cameraBlocked);
+      } finally {
+        sessionStorage.removeItem('camera');
+        setVisible(true);
+        context.updateStep(router);
+      }
     };
 
     validateStep();
@@ -60,6 +69,7 @@ const PruebaVida = () => {
       </Instructions>
       <FormVideo />
       <Checklist onFinish={onFinish} />
+      <CameraBlocked />
     </div>
   );
 };
