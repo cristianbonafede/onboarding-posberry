@@ -10,6 +10,7 @@ import '../styles/selects.scss';
 function MyApp({ Component, pageProps }) {
   return (
     <SolicitudContextProvider>
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
       <Component {...pageProps} />
     </SolicitudContextProvider>
   );
