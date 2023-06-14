@@ -553,7 +553,7 @@ const updateMatriz = async () => {
     const estado = response.data.estado;
     sessionStorage.setItem('status', estado);
 
-    if (estado.toString() === solicitud.status.pending) {
+    if (estado.toString() === solicitud.status.approved) {
       return true;
     } else if (estado.toString() === solicitud.status.validation) {
       window.location.replace(`/procesando`);
