@@ -7,6 +7,7 @@ import SolicitudContext from '../../store/solicitud-context';
 import Button from './button';
 import Highlight from './highlight';
 
+import Checkbox from './checkbox';
 import classes from './layout.module.scss';
 
 const Layout = (props) => {
@@ -21,6 +22,7 @@ const Layout = (props) => {
   const [landscape, setLandscape] = useState(false);
   const [logo, setLogo] = useState();
   const [type, setType] = useState();
+  const [aceptaTyC, setAceptaTyC] = useState(true);
 
   useEffect(() => {
     function handleResize() {
@@ -45,21 +47,123 @@ const Layout = (props) => {
     if (context.steps.length === 0) {
       return;
     }
-
     setLogo(sessionStorage.getItem('logo'));
-    setType(sessionStorage.getItem('type'));
+    const ty = sessionStorage.getItem('type');
+    setType(ty);
+    if (ty == 'EmpadronamientoBIND') {
+      setAceptaTyC(false);
+    }
     setVisible(true);
   }, [context.steps]);
 
+  const renderTextButton = () => {
+    if (type == 'credenciales') {
+      return <div>Continuar</div>;
+    } else if (type == 'EmpadronamientoBIND') {
+      return <div>Iniciar</div>;
+
+    } else {
+      return <div>Iniciar</div>;
+    }
+  };
+
+
+  const onClickTerminosReempadronamiento = async (checked) => {
+    if (type == 'EmpadronamientoBIND') {
+      if (checked) {
+        setAceptaTyC(true);
+      }
+      else {
+        setAceptaTyC(false);
+      }
+    }
+  };
+
+  const renderTerminosReempadronamiento = () => {
+    return (
+      <div
+        className={classes.reempadronamiento}
+      >
+        He leído y acepto los
+        <Highlight primary>
+          <a
+            href={`/pdf/TyCdelBind-reempadronamiento.pdf`}
+            rel="noreferrer"
+            target="_blank"
+          >
+            <span className={classes.tyc}> Terminos y Condiciones</span>
+          </a>
+        </Highlight>
+      </div>
+    );
+  };
+
   const renderText = () => {
-    // Texto Credenciales
+    // Jubilo
+    if (type == 'EmpadronamientoBIND') {
+      return (
+        <div>
+          <div className={classes.title}>¡Bienvenidos!</div>
+          <div className={classes.description}>
+            <div className={classes.middle}>
+              Para agilizar tus operaciones en <Highlight>BIND</Highlight>
+              es necesario que registres tus datos para que podamos
+              identificarte y operar con MAYOR SEGURIDAD y AGILIDAD.
+            </div>
+            <div className={classes.middle}>
+              Para comenzar,{' '}
+              <Highlight>es importante que tengas a mano</Highlight>: DNI,
+              Email y Celular
+            </div>
+            <div className={classes.middle}>
+              Y que te ubiques en un lugar con buena luz.
+            </div>
+            {(aceptaTyC || isHome) && (
+
+              <div className={classes.small}>
+                Para comenzar con el proceso de reempadronamiento, aceptá
+                nuestros Términos y Condiciones.
+                <br />
+                <br />
+                <div onClick={onClickTerminosReempadronamiento}>
+                  <Checkbox
+
+                    label={renderTerminosReempadronamiento()}
+                    required
+                  />
+                </div>
+              </div>
+
+            )}
+
+          </div>
+        </div>
+      );
+    }
+    if (type == 'WebPagos') {
+      return (
+        <div>
+          <div className={classes.title}>
+            ¡Bienvenido! Para que puedas operar con seguridad necesitamos
+            <Highlight>validar tu identidad</Highlight>
+            <div className={classes.description}>
+              <div className={classes.paragraph}>
+                Tomará unos pocos minutos. Te recomendamos tener a mano tu DNI y
+                ubicarte en un lugar con buena luz.
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Credenciales
     if (type == 'credenciales') {
       return (
         <div>
           <div className={classes.title}>¡Hola de nuevo!</div>
           <div className={classes.description}>
             <Highlight primary>
-              {' '}
               Para terminar el proceso sólo falta completar un paso más.&nbsp;
             </Highlight>
             Haz click en continuar.
@@ -67,13 +171,14 @@ const Layout = (props) => {
         </div>
       );
     }
-    // Texto Persona Juridica
+
+    // Persona Juridica
     if (type == 'juridica') {
       return (
         <div>
           <div className={classes.title}>
             ¡Bienvenido! Para comenzar a cobrar con QR necesitas tener una
-            <Highlight primary>cuenta en el banco.</Highlight>
+            <Highlight primary>cuenta en el banco BIND.</Highlight>
           </div>
           <div className={classes.description}>
             Te contactaremos con un representante del banco para completar el
@@ -81,24 +186,27 @@ const Layout = (props) => {
           </div>
         </div>
       );
-    } else {
-      // Texto Persona fisica
-      return (
-        <div>
-          <div className={classes.title}>
-            ¡Bienvenido! Para comenzar a cobrar con QR necesitamos
-            <Highlight primary>validar tu identidad.</Highlight>
-          </div>
-          <div className={classes.description}>
+    }
+
+    // Persona Fisica
+    return (
+      <div>
+        <div className={classes.title}>
+          ¡Bienvenido! Para comenzar a cobrar con QR necesitamos
+          <Highlight primary>validar tu identidad.</Highlight>
+        </div>
+        <div className={classes.description}>
+          <div className={classes.paragraph}>
             Tomará unos pocos minutos. Te recomendamos
             <Highlight primary>tener a mano tu DNI</Highlight> y ubicarte en un
             lugar con buena luz.
-            <br />
+          </div>
+          <div className={classes.paragraph}>
             Recordá que es necesario tener una actividad en AFIP.
           </div>
         </div>
-      );
-    }
+      </div>
+    );
   };
 
   const onClickRegister = () => {
@@ -119,7 +227,14 @@ const Layout = (props) => {
           </div>
           {renderText()}
           {isHome && (
-            <Button type="primary" text="Iniciar" onClick={onClickRegister} />
+            <div className={classes.action}>
+              <Button
+                disabled={!aceptaTyC}
+                type="primary"
+                text={renderTextButton()}
+                onClick={onClickRegister}
+              />
+            </div>
           )}
         </div>
         <div className={`${classes.main} ${isHome && classes.home}`}>

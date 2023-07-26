@@ -19,7 +19,7 @@ const Camera = (props) => {
   const mediaRecorderRef = useRef(null);
   const fileRef = useRef(null);
 
-  const [cameras, setCameras] = useState();
+  const [cameras, setCameras] = useState([]);
   const [currentCamera, setCurrentCamera] = useState();
   const [colorPrimary, setColorPrimary] = useState();
   const [colorText, setColorText] = useState();
@@ -41,27 +41,25 @@ const Camera = (props) => {
 
   // Cargar camaras
   useEffect(() => {
-    async function getCameras() {
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const nCameras = devices.filter(({ kind }) => kind === 'videoinput');
-      setCameras(nCameras);
+    const jsonCameras = sessionStorage.getItem('cameras');
+    let nCameras = JSON.parse(jsonCameras);
 
-      const savedCamera = sessionStorage.getItem('camera');
-      const nCamera = savedCamera ? JSON.parse(savedCamera) : undefined;
-      setupCamera(nCamera);
+    if (isMobile) {
+      nCameras = position === 'back' ?
+        nCameras.filter(x => x.facingMode.includes('environment')) :
+        nCameras.filter(x => x.facingMode.includes('user'));
     }
 
-    getCameras();
+    setCameras(nCameras);
+    setupCamera();
   }, []);
 
-  const setupCamera = (camera) => {
-    let nContraints = {};
+  const setupCamera = (camera = undefined) => {
+    const deviceId = selectCamera(camera);
 
-    if (camera) {
-      nContraints.deviceId = camera.deviceId;
-    } else {
-      nContraints.facingMode = position === 'front' ? 'user' : 'environment';
-    }
+    let nContraints = {
+      deviceId: deviceId
+    };
 
     if (isMobile) {
       nContraints.width = position === 'back' ? { min: 720 } : { min: 540 };
@@ -72,21 +70,38 @@ const Camera = (props) => {
     setContraints(nContraints);
   };
 
-  const onChangeCamera = () => {
-    let index = -1;
+  const selectCamera = (camera) => {
+    if (camera) {
+      return camera.deviceId;
+    }
 
-    if (currentCamera) {
-      index = cameras.indexOf(currentCamera);
+    if (!isMobile || cameras.length === 1) {
+      return cameras[0].deviceId;
+    }
 
-      if (index === cameras.length - 1) {
-        index = -1;
+    if (position == 'back') {
+      const focusDistance = cameras.sort((a, b) => (b.focusDistance?.min ?? 0) - (a.focusDistance?.min ?? 0));
+      const focusMode = focusDistance.filter(x => x.focusMode.includes('continuous'));
+
+      if (focusMode.length > 0) {
+        return focusMode[0].deviceId;
       }
-    } else {
-      index = contraints?.facingMode === 'user' ? 0 : -1;
+
+      return focusDistance[0].deviceId;
+    }
+
+    return cameras[0].deviceId;
+  }
+
+  const onChangeCamera = () => {
+    let index = currentCamera ? cameras.indexOf(currentCamera) : -1;
+    if (index === cameras.length - 1) {
+      index = -1;
     }
 
     const nCamera = cameras[index + 1];
     sessionStorage.setItem('camera', JSON.stringify(nCamera));
+
     setCurrentCamera(nCamera);
     setupCamera(nCamera);
   };
