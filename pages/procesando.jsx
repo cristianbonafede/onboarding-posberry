@@ -9,7 +9,7 @@ const ProcesandoPage = () => {
   return (
     <Fragment>
       <Head>
-        <title>Procesando - Banco Industrial</title>
+        <title>Procesando - Soluciones Andinas</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Layout>

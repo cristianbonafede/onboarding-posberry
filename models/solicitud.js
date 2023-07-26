@@ -11,7 +11,6 @@ const types = {
   fisica: 'fisica',
   juridica: 'juridica',
   credenciales: 'credenciales',
-  empadronamientoBIND: 'EmpadronamientoBIND', //jubilo
 };
 
 const screens = {
@@ -30,12 +29,11 @@ const status = {
   rejected: '3',
   validation: '4',
   pendingCredentials: '5',
-  errorBind: '6',
+  errorsandinas: '6',
 };
 
 const get = async () => {
   if (mockup) {
-    console.log('Get (Mockup)');
     await mockupDelay();
     return {
       nombres: 'Juan Carlos',
@@ -64,13 +62,7 @@ const get = async () => {
   return false;
 };
 
-const create = async (
-  frente,
-  dorso,
-  genero = null,
-  documento = null,
-  documentotramite = null
-) => {
+const create = async (frente, dorso, cropFrente, cropDorso) => {
   frente = await compressBase64Image(frente, 0.6);
   frente = frente.substr(frente.indexOf(',') + 1);
 
@@ -78,13 +70,8 @@ const create = async (
   dorso = dorso.substr(dorso.indexOf(',') + 1);
 
   if (mockup) {
-    console.log('Create (Mockup)');
     await mockupDelay();
-    return {
-      error: false,
-      codigo: 'PDF417_NO_ENCONTRADO',
-      data: { id: '0f8fad5b-d9cb-469f-a165-70867728950e' },
-    };
+    return true;
   }
 
   const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes`;
@@ -92,20 +79,24 @@ const create = async (
     entidadId: sessionStorage.getItem('entidad'),
     frente: frente,
     dorso: dorso,
-    genero: genero,
-    documento: documento,
-    documentotramite: documentotramite,
-    tipoSolicitud: sessionStorage.getItem('type')
-
+    cropFrente: cropFrente,
+    cropDorso: cropDorso,
   };
 
   const response = await http.post(url, data);
-  return response;
+
+  if (!response.error) {
+    const solicitud = response.data.id;
+    sessionStorage.setItem('solicitud', solicitud);
+    return true;
+  }
+
+  window.location.replace(`error?code=${response.codigo}`);
+  return false;
 };
 
 const createJuridica = async (nombre, cuit, rubro, email, telefono) => {
   if (mockup) {
-    console.log('CreateJuridica (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -131,49 +122,8 @@ const createJuridica = async (nombre, cuit, rubro, email, telefono) => {
   return false;
 };
 
-const updateGestor = async () => {
-  if (mockup) {
-    console.log('UpdateGestor (Mockup)');
-    await mockupDelay();
-    return true;
-  }
-
-  const id = sessionStorage.getItem('solicitud');
-  const gestor = sessionStorage.getItem('gestor');
-
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/update-gestor`;
-  const data = {
-    gestor: gestor,
-  };
-
-  await http.patch(url, data);
-
-  return true;
-};
-
-const updateRef_Id = async () => {
-  if (mockup) {
-    console.log('UpdateRef_Id (Mockup)');
-    await mockupDelay();
-    return true;
-  }
-
-  const id = sessionStorage.getItem('solicitud');
-  const ref_id = sessionStorage.getItem('ref_id');
-
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/update-refId`;
-  const data = {
-    externalRefId: ref_id,
-  };
-
-  await http.patch(url, data);
-
-  return true;
-};
-
 const updateMorfologia = async () => {
   if (mockup) {
-    console.log('UpdateMorfologia (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -194,7 +144,6 @@ const updateMorfologia = async () => {
 
 const updateListaNegra = async () => {
   if (mockup) {
-    console.log('UpdateListaNegra (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -213,15 +162,14 @@ const updateListaNegra = async () => {
   return false;
 };
 
-const updateListaNegraBind = async () => {
+const updateListaNegrasandinas = async () => {
   if (mockup) {
-    console.log('UpdateListaNegraBind (Mockup)');
     await mockupDelay();
     return true;
   }
 
   const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/lista-negra-bind`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/lista-negra-sandinas`;
   const data = {};
 
   const response = await http.patch(url, data);
@@ -236,7 +184,6 @@ const updateListaNegraBind = async () => {
 
 const updateListaBlanca = async () => {
   if (mockup) {
-    console.log('UpdateListaBlanca (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -257,7 +204,6 @@ const updateListaBlanca = async () => {
 
 const updateRenaper = async () => {
   if (mockup) {
-    console.log('UpdateRenaper (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -278,7 +224,6 @@ const updateRenaper = async () => {
 
 const updatePruebaVida = async (video) => {
   if (mockup) {
-    console.log('UpdatePruebaVida (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -301,7 +246,6 @@ const updatePruebaVida = async (video) => {
 
 const updateEmail = async (email) => {
   if (mockup) {
-    console.log('UpdateEmail (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -323,7 +267,6 @@ const updateEmail = async (email) => {
 
 const sendEmailOtp = async () => {
   if (mockup) {
-    console.log('SendEmailOtp (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -343,7 +286,6 @@ const sendEmailOtp = async () => {
 
 const validateEmailOtp = async (otp) => {
   if (mockup) {
-    console.log('ValidateEmailOtp (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -369,7 +311,6 @@ const validateEmailOtp = async (otp) => {
 
 const updateEmailScoring = async () => {
   if (mockup) {
-    console.log('UpdateEmailScoring (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -389,7 +330,6 @@ const updateEmailScoring = async () => {
 
 const updateTelefono = async (telefono) => {
   if (mockup) {
-    console.log('UpdateTelefono (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -411,7 +351,6 @@ const updateTelefono = async (telefono) => {
 
 const updateTelefonoScoring = async () => {
   if (mockup) {
-    console.log('UpdateTelefonoScoring (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -431,7 +370,6 @@ const updateTelefonoScoring = async () => {
 
 const sendTelefonoOtp = async () => {
   if (mockup) {
-    console.log('SendTelefonoOtp (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -451,7 +389,6 @@ const sendTelefonoOtp = async () => {
 
 const validateTelefonoOtp = async (otp) => {
   if (mockup) {
-    console.log('ValidateTelefonoOtp (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -492,7 +429,6 @@ const update = async (
   comercioMunicipalidad
 ) => {
   if (mockup) {
-    console.log('Update (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -527,7 +463,6 @@ const update = async (
 
 const updatePadronA5 = async () => {
   if (mockup) {
-    console.log('UpdatePadronA5 (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -547,7 +482,6 @@ const updatePadronA5 = async () => {
 
 const updateSujetoObligado = async () => {
   if (mockup) {
-    console.log('UpdateSujetoObligado (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -567,7 +501,6 @@ const updateSujetoObligado = async () => {
 
 const updateNosis = async () => {
   if (mockup) {
-    console.log('UpdateNosis (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -587,7 +520,6 @@ const updateNosis = async () => {
 
 const updateWorldsys = async () => {
   if (mockup) {
-    console.log('UpdateWorldsys (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -607,7 +539,6 @@ const updateWorldsys = async () => {
 
 const updateMatriz = async () => {
   if (mockup) {
-    console.log('UpdateMatriz (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -622,7 +553,7 @@ const updateMatriz = async () => {
     const estado = response.data.estado;
     sessionStorage.setItem('status', estado);
 
-    if (estado.toString() === solicitud.status.pending) {
+    if (estado.toString() === solicitud.status.approved) {
       return true;
     } else if (estado.toString() === solicitud.status.validation) {
       window.location.replace(`/procesando`);
@@ -639,7 +570,6 @@ const updateMatriz = async () => {
 
 const updateLegajoDigital = async () => {
   if (mockup) {
-    console.log('UpdateLegajoDigital (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -654,7 +584,6 @@ const updateLegajoDigital = async () => {
 
 const updateAltaCuenta = async () => {
   if (mockup) {
-    console.log('UpdateAltaCuenta (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -678,7 +607,6 @@ const updateCredenciales = async (usuario, password) => {
   password = await hashSha1(password);
 
   if (mockup) {
-    console.log('UpdateCredenciales (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -701,7 +629,6 @@ const updateCredenciales = async (usuario, password) => {
 
 const updateDispositivo = async (urlPJ) => {
   if (mockup) {
-    console.log('UpdateDispositivo (Mockup)');
     await mockupDelay();
     return true;
   }
@@ -722,295 +649,17 @@ const updateDispositivo = async (urlPJ) => {
   return false;
 };
 
-const updateCuentaComitente = async () => {
-  if (mockup) {
-    console.log('UpdateCuentaComitente (Mockup)');
-    await mockupDelay();
-    return true;
-  }
 
-  const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/alta-cuenta-comitente`;
-
-  const response = await http.patch(url);
-
-  if (!response.error) {
-    return true;
-  }
-
-  return false;
-};
-//TODO: EDITAR ESTA FUNCION
-const updateProductosBanco = async (productosBancoId) => {
-  if (mockup) {
-    console.log('updateProductosBanco (Mockup)');
-    await mockupDelay();
-    return true;
-  }
-
-  const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/productosbanco`;
-
-  const response = await http.patch(url, { productosBancoId });
-
-  if (!response.error) {
-    return true;
-  }
-
-  return false;
-};
-
-const updateDatosBind = async () => {
-  if (mockup) {
-    console.log('UpdateDatosBind (Mockup)');
-    await mockupDelay();
-    return true;
-  }
-
-  const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/actualizar-datos-cliente-bind`;
-  const response = await http.patch(url);
-
-  if (!response.error) {
-    return true;
-  }
-  window.location.replace(`error?code=${response.codigo}`);
-  return false;
-};
-
-const existePersona = async () => {
-  if (mockup) {
-    console.log('ExistePersona (Mockup)');
-    await mockupDelay();
-    return true;
-  }
-  const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/existe-persona`;
-  const response = await http.patch(url);
-
-  if (!response.error) {
-    return true;
-  }
-  window.location.replace(`error?code=${response.codigo}`);
-  return false;
-};
-
-const getCuil = async () => {
-  if (mockup) {
-    console.log('GetCuil (Mockup)');
-    await mockupDelay();
-    return {
-      cuil: '',
-    };
-  }
-
-  const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/cuil`;
-
-  const response = await http.get(url);
-  if (!response.error) {
-    return response.data;
-  }
-
-  window.location.replace(`error?code=${response.codigo}`);
-  return false;
-};
-
-const updateCuil = async (cuil) => {
-  if (mockup) {
-    console.log('UpdateCuil (Mockup)');
-    await mockupDelay();
-    return true;
-  }
-
-  const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/cuil`;
-  const data = {
-    cuil: cuil,
-  };
-
-  const response = await http.patch(url, data);
-  if (!response.error) {
-    return true;
-  }
-
-  window.location.replace(`error?code=${response.codigo}`);
-  return false;
-};
-
-const createEnrollment = async () => {
-  if (mockup) {
-    console.log('CreateEnrollment (Mockup)');
-    await mockupDelay();
-    return {
-      urlEnrollment: 'https://www.google.com.ar/',
-    };
-  }
-
-  const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/enrollment-create`;
-  const data = {};
-  const response = await http.patch(url, data);
-
-  if (!response.error) {
-    return response.data;
-  }
-
-  window.location.replace(`error?code=${response.codigo}`);
-  return false;
-};
-
-const updateEstadoEnrollment = async () => {
-  if (mockup) {
-    console.log('UpdateEstadoEnrollment (Mockup)');
-    await mockupDelay();
-    return true;
-  }
-
-  const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/enrollment-estado`;
-  const data = {};
-  const response = await http.patch(url, data);
-
-  if (!response.error) {
-    return true;
-  }
-
-  window.location.replace(`error?code=${response.codigo}`);
-  return false;
-};
-
-const updateEstadoSimpleEnrollment = async () => {
-  if (mockup) {
-    console.log('UpdateEstadoSimpleEnrollment (Mockup)');
-    await mockupDelay();
-    return {
-      complete: false,
-    };
-  }
-
-  const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/enrollment-estado-simple`;
-  const data = {};
-  const response = await http.patch(url, data);
-
-  if (!response.error) {
-    return response.data;
-  }
-
-  window.location.replace(`error?code=${response.codigo}`);
-  return false;
-};
-
-const updateInfoEnrollment = async () => {
-  if (mockup) {
-    console.log('UpdateInfoEnrollment (Mockup)');
-    await mockupDelay();
-    return true;
-  }
-
-  const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/enrollment-estado-simple`;
-  const data = {};
-  const response = await http.patch(url, data);
-
-  if (!response.error) {
-    return true;
-  }
-
-  window.location.replace(`error?code=${response.codigo}`);
-  return false;
-};
-
-const updateJubilo = async (aceptaTyc) => {
-  if (mockup) {
-    console.log('UpdateJubilo (Mockup)');
-    await mockupDelay();
-    return true;
-  }
-
-  const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/update-jubilo`;
-  const data = {
-    aceptaTyc: aceptaTyc,
-  };
-
-  const response = await http.patch(url, data);
-  if (!response.error) {
-    return true;
-  }
-
-  window.location.replace(`error?code=${response.codigo}`);
-  return false;
-};
-
-const updateRipsa = async (aceptaTyc) => {
-  debugger;
-  if (mockup) {
-    console.log('Update-Ripsa (Mockup)');
-    await mockupDelay();
-    return true;
-  }
-
-  const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/ripsa`;
-  const data = {
-    aceptaTyc: aceptaTyc,
-  };
-
-  const response = await http.put(url, data);
-  if (!response.error) {
-    return true;
-  }
-
-  window.location.replace(`error?code=${response.codigo}`);
-  return false;
-};
-
-const updateAltaRegistroEmail = async () => {
-  if (mockup) {
-    console.log('UpdateAltaRegistroEmail (Mockup)');
-    await mockupDelay();
-    return true;
-  }
-
-  const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/alta-registro-email`;
-  const data = {};
-  const response = await http.patch(url, data);
-
-  if (!response.error) {
-    return true;
-  }
-
-  window.location.replace(`error?code=${response.codigo}`);
-  return false;
-};
-
-const updateAltaRegistroCelular = async () => {
-  if (mockup) {
-    console.log('UpdateAltaRegistroCelular (Mockup)');
-    await mockupDelay();
-    return true;
-  }
-
-  const id = sessionStorage.getItem('solicitud');
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/solicitudes/${id}/alta-registro-celular`;
-  const data = {};
-  const response = await http.patch(url, data);
-
-  if (!response.error) {
-    return true;
-  }
-
-  window.location.replace(`error?code=${response.codigo}`);
-  return false;
-};
 
 const runAction = async (action, form) => {
   switch (action.id) {
     case 'create':
-      return true;
+      return await create(
+        form.frente,
+        form.dorso,
+        form.cropFrente,
+        form.cropDorso
+      );
 
     case 'create-juridica':
       return await createJuridica(
@@ -1024,8 +673,8 @@ const runAction = async (action, form) => {
     case 'update-lista-negra':
       return await updateListaNegra();
 
-    case 'update-lista-negra-bind':
-      return await updateListaNegraBind();
+    case 'update-lista-negra-sandinas':
+      return await updateListaNegrasandinas();
 
     case 'update-lista-blanca':
       return await updateListaBlanca();
@@ -1111,47 +760,7 @@ const runAction = async (action, form) => {
     case 'update-dispositivo-pj':
       return await updateDispositivo('pj');
 
-    case 'update-cuenta-comitente':
-      return await updateCuentaComitente();
 
-    case 'update-productos-banco':
-      return await updateProductosBanco(form);
-
-    case 'update-datos-bind':
-      return await updateDatosBind();
-
-    case 'existe-persona':
-      return await existePersona();
-
-    case 'get-cuil':
-      return await getCuil();
-
-    case 'update-cuil':
-      return await updateCuil();
-
-    case 'create-enrollment':
-      return await createEnrollment();
-
-    case 'update-estado-enrollment':
-      return await updateEstadoEnrollment();
-
-    case 'update-estado-simple-enrollment':
-      return await updateEstadoSimpleEnrollment();
-
-    case 'update-info-enrollment':
-      return await updateInfoEnrollment();
-
-    case 'update-jubilo':
-      return await updateJubilo(form.aceptaTyc);
-
-    case 'update-ripsa':
-      return await updateRipsa(form.aceptaTyc);
-
-    case 'update-alta-registro-email':
-      return await updateAltaRegistroEmail();
-
-    case 'update-alta-registro-celular':
-      return await updateAltaRegistroCelular();
 
     default:
       return false;
@@ -1169,9 +778,6 @@ const getSteps = async (client) => {
       sessionStorage.setItem('otpReadonly', true);
       return JSON.parse(client.jsonCredenciales);
 
-    case types.empadronamientoBIND:
-      return JSON.parse(client.jsonJubilo);
-
     default:
       return JSON.parse(client.jsonPersonaFisica);
   }
@@ -1183,12 +789,8 @@ export const solicitud = {
   status: status,
   getSteps: getSteps,
   get: get,
-  getCuil: getCuil,
-  updateCuil: updateCuil,
   create: create,
   createJuridica: createJuridica,
-  updateGestor: updateGestor,
-  updateRef_Id: updateRef_Id,
   updateMorfologia: updateMorfologia,
   updateRenaper: updateRenaper,
   updatePruebaVida: updatePruebaVida,
@@ -1203,22 +805,10 @@ export const solicitud = {
   update: update,
   updatePadronA5: updatePadronA5,
   updateSujetoObligado: updateSujetoObligado,
-  updateProductosBanco: updateProductosBanco,
   updateNosis: updateNosis,
   updateWorldsys: updateWorldsys,
   updateMatriz: updateMatriz,
   updateLegajoDigital: updateLegajoDigital,
   updateCredenciales: updateCredenciales,
-  updateCuentaComitente: updateCuentaComitente,
-  updateDatosBind: updateDatosBind,
-  existePersona: existePersona,
-  createEnrollment: createEnrollment,
-  updateEstadoEnrollment: updateEstadoEnrollment,
-  updateEstadoSimpleEnrollment: updateEstadoSimpleEnrollment,
-  updateInfoEnrollment: updateInfoEnrollment,
-  updateJubilo: updateJubilo,
-  updateRipsa: updateRipsa,
-  updateAltaRegistroEmail: updateAltaRegistroEmail,
-  updateAltaRegistroCelular: updateAltaRegistroCelular,
   runAction: runAction,
 };

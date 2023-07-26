@@ -7,7 +7,7 @@ const ErrorPage = () => {
   return (
     <Fragment>
       <Head>
-        <title>Ups - Banco Industrial</title>
+        <title>Ups - Soluciones Andinas</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Error />

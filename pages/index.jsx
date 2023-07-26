@@ -14,15 +14,12 @@ const HomePage = () => {
   useEffect(() => {
     sessionStorage.removeItem('status');
     sessionStorage.removeItem('solicitud');
-    sessionStorage.removeItem('gestor');
-    sessionStorage.removeItem('email');
-    sessionStorage.removeItem('ref_id');
     sessionStorage.removeItem('step');
     sessionStorage.removeItem('otpReadonly');
   }, []);
 
   useEffect(() => {
-    let { e, t, s, g, ref_id, m } = router.query;
+    let { e, t, s } = router.query;
 
     if (!e) {
       return;
@@ -31,16 +28,13 @@ const HomePage = () => {
     sessionStorage.setItem('entidad', e);
     sessionStorage.setItem('type', t ?? '');
     sessionStorage.setItem('solicitud', s ?? '');
-    sessionStorage.setItem('gestor', g ?? '');
-    sessionStorage.setItem('ref_id', ref_id ?? '');
-    sessionStorage.setItem('email', m ?? '');
     context.initialize();
   }, [router.query]);
 
   return (
     <Fragment>
       <Head>
-        <title>BIND - Banco Industrial</title>
+        <title>Onboarding - Soluciones Andinas</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Layout>

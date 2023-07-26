@@ -18,7 +18,6 @@ const Email = () => {
   const context = useContext(SolicitudContext);
 
   const [visible, setVisible] = useState(false);
-  const type = sessionStorage.getItem('type');
 
   useEffect(() => {
     const validateStep = async () => {
@@ -43,39 +42,18 @@ const Email = () => {
     return <div className="not-allowed"></div>;
   }
 
-  const renderText = () => {
-    // Jubilo
-    if (type == 'WebPagos') {
-      return (
-        <div>
-          Ahora necesitamos
-          <Highlight primary>validar tu correo electrónico</Highlight> al que enviaremos
-          información sobre tus <Highlight primary>facturas y comprobantes de pago.</Highlight>
-        </div>
-      );
-    }
-
-    return (
-      <div>
-        Ahora necesitamos que ingreses tu
-        <Highlight primary>correo electrónico</Highlight> que usaremos de
-        contacto. Te enviaremos un
-        <Highlight primary>código numérico</Highlight>para validar que sea
-        correcto.
-      </div>
-
-    );
-  };
   return (
-
     <div className={classes.documento}>
       <Header />
       <Instructions
         image="/images/email.png"
         nextScreen={solicitud.screens.form}
       >
-        {renderText()}
-
+        Ahora necesitamos que ingreses tu
+        <Highlight primary>correo electrónico</Highlight> que usaremos de
+        contacto. Te enviaremos un
+        <Highlight primary>código numérico</Highlight>para validar que sea
+        correcto.
       </Instructions>
       <FormEmail />
       <FormOtp />

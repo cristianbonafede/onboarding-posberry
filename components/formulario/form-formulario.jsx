@@ -99,7 +99,7 @@ const FormFormulario = () => {
               openBase64Pdf(terminosBanco.contenido);
             }}
           >
-            Terminos & Condiciones &nbsp;para ser cliente Banco Bind
+            Terminos & Condiciones &nbsp;para ser cliente Banco
           </a>
         </Highlight>
       </div>

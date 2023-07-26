@@ -9,7 +9,7 @@ const EmailPage = () => {
   return (
     <Fragment>
       <Head>
-        <title>Email - Banco Industrial</title>
+        <title>Email - Soluciones Andinas</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Layout>

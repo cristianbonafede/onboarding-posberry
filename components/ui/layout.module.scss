@@ -21,7 +21,6 @@
     align-items: center;
     justify-content: space-between;
     padding: 40px 60px;
-    overflow-y: auto;
 
     .jumbotron {
       height: calc(100% - 80px);
@@ -55,20 +54,6 @@
         max-width: 500px;
         font-size: 20px;
         margin-bottom: 60px;
-
-        .paragraph {
-          margin-bottom: 10px;
-        }
-        .small {
-          margin-bottom: 10px;
-        }
-        .middle {
-          margin-bottom: 10px;
-        }
-      }
-
-      .action {
-        padding-bottom: 20px;
       }
 
       &.home {
@@ -126,12 +111,6 @@
     }
   }
 }
-
-.reempadronamiento {
-  color: white;
-.tyc {
- text-decoration: underline;
-}}
 
 @media only screen and (max-width: 1500px) {
   .layout {
@@ -206,14 +185,6 @@
 
         .description {
           font-size: 17px;
-        }
-        .small {
-          font-size: 12px;
-          margin-bottom: 10px;
-        }
-        .middle {
-          font-size: 15px;
-          margin-bottom: 10px;
         }
 
         &.home {

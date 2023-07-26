@@ -1,4 +1,11 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
+import http from '../../services/http';
+
+import { solicitud } from '../../models/solicitud';
+
 
 import Header from '../ui/header';
 import Highlight from './../ui/highlight';
@@ -6,42 +13,32 @@ import Highlight from './../ui/highlight';
 import classes from './index.module.scss';
 
 const Documento = () => {
-  const type = sessionStorage.getItem('type');
+  const router = useRouter();
+  const idEntidad = sessionStorage.getItem('entidad');
 
-  const renderText = () => {
-    // Jubilo
-    if (type == 'EmpadronamientoBIND') {
-      return (
-        <div className={classes.text}>
-          <div className={classes.title}>¡Felicitaciones!</div>
-          <div>
-            <Highlight primary>Hemos podido validar tus datos.</Highlight>
-            <div>
-              Mantenerlos actualizados nos permite operar de manera más agil y
-              más segura.
-            </div>
-            <div>
-              Ante cualquier duda, comunicate al: 0810 666 0505 o chateá con
-              BINDI: 113420-9812
-            </div>
-          </div>
-        </div>
-      );
+
+  useEffect(() => {
+    async function getData() {
+      const response = await solicitud.get();
+      setCbu(`(${response.cbu})`);
     }
 
-    return (
-      <div className={classes.text}>
-        <div className={classes.title}>¡Felicitaciones!</div>
-        <div>
-          Tu alta fue exitosa y
-          <Highlight primary>te enviaremos un email</Highlight>
-          para que puedas comenzar a cobrar con QR.
-          <br />
-          <Highlight primary>No olvides revisar tu SPAM</Highlight>
-        </div>
-      </div>
-    );
-  };
+    getData();
+  }, []);
+
+  
+  const [cbu, setCbu] = useState('');
+      
+  
+  const getData = setTimeout(async () => {
+  const response = await http.get(
+        `entidades/${idEntidad}`
+      );
+   if (response) {
+
+     
+      }
+    }, 10000);
 
   return (
     <div className={classes.finalizar}>
@@ -55,7 +52,19 @@ const Documento = () => {
             objectFit="contain"
           />
         </div>
-        {renderText()}
+        <div className={classes.text}>
+          <div className={classes.title}>
+            ¡Felicitaciones!
+          </div>
+          <div>
+          Tu alta fue exitosa y
+            <Highlight primary>
+            te enviaremos un email
+            </Highlight>
+            para que puedas comenzar a cobrar con QR.<br/>
+            <Highlight primary>No olvides revisar tu SPAM</Highlight>
+          </div>
+        </div>
       </div>
     </div>
   );

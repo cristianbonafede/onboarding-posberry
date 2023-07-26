@@ -2,7 +2,7 @@ import { Form, Select as Selectd } from 'antd';
 import { useEffect, useState } from 'react';
 
 const Select = (props) => {
-  const { label, name, options, text, value, required, autofocus, placeholder, validators } =
+  const { label, name, options, text, value, required, autofocus, validators } =
     props;
 
   const [focused, setFocused] = useState(false);
@@ -46,7 +46,6 @@ const Select = (props) => {
       <Selectd
         autoFocus={autofocus}
         allowClear
-        placeholder={placeholder}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         style={renderStyle()}

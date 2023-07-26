@@ -16,7 +16,6 @@ import classes from './index.module.scss';
 const Telefono = () => {
   const router = useRouter();
   const context = useContext(SolicitudContext);
-  const readonly = sessionStorage.getItem('otpReadonly') === 'true';
 
   const [visible, setVisible] = useState(false);
 
@@ -51,14 +50,9 @@ const Telefono = () => {
         vertical
         nextScreen={solicitud.screens.form}
       >
-        {!readonly && (
-          <div>
-            También, necesitamos validar tu número de
-            <Highlight primary> celular </Highlight>
-            para utilizarlo como medio de contacto.
-          </div>
-        )}
-        Te enviaremos un
+        También, necesitamos validar tu
+        <Highlight primary>número de teléfono</Highlight>
+        para utilizarlo como medio de contacto. Te enviaremos un
         <Highlight primary>código numérico</Highlight>
         para validar que sea correcto.
       </Instructions>
